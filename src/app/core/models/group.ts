@@ -1,15 +1,15 @@
-import { Message } from "./message";
-import { User } from "./user";
+import { Message } from './message';
+import { User } from './user';
 
 export interface Group {
-    Code: string;
-    Type: string;
-    Avatar: string;
-    Name: string;
-    Created: Date;
-    CreatedBy: string;
-    LastActive: Date;
+  id: string;
+  typeChatId: string;
+  photo: string;
+  chatName: string;
+  createdAt: Date;
+  // CreatedBy: string;
+  updatedAt: Date;
 
-    Users: User[];
-    LastMessage: Message;
+  Users: User[];
+  lastestMessage: string;
 }

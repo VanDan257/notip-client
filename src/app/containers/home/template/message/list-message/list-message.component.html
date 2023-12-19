@@ -1,40 +1,44 @@
 <div class="box-left-content-title">
-    <strong class="size-13">Tất cả tin nhắn</strong>
+  <strong class="size-13">Tất cả tin nhắn</strong>
 </div>
 <div class="box-left-content-body">
-    <ul class="list-unstyled">
-        <li *ngFor="let item of datas; index as index">
-            <div (click)="openMessage(item.Code)" class="box-group" [ngClass]="{'active': groupSelected == item.Code}">
-                <div class="user-avatar">
-                    <img [src]="item.Avatar | pipeHostFile" alt="">
-                </div>
-                <div class="box-group-detail">
-                    <div class="box-group-title">
-                        <div class="box-group-title-name">
-                            <span>
-                                {{item.Name}}
-                            </span>
-                        </div>
-                        <div class="box-group-title-time">
-                            <span>{{item.LastActive | chatDate}}</span>
-                        </div>
-                    </div>
-                    <div class="box-group-last-message">
-                        <ng-container *ngIf="item.LastMessage != null">
-                            <ng-container *ngIf="item.LastMessage.Content.length > 30; else elseTemplate">
-                                <span>
-                                    {{item.LastMessage.Content.substring(0,30)}}...
-                                </span>
-                            </ng-container>
-                            <ng-template #elseTemplate>
-                                <span>
-                                    {{item.LastMessage.Content}}
-                                </span>
-                            </ng-template>
-                        </ng-container>
-                    </div>
-                </div>
+  <ul class="list-unstyled">
+    <li *ngFor="let item of datas; index as index">
+      <div
+        (click)="openMessage(item.id)"
+        class="box-group"
+        [ngClass]="{ active: chatId == item.id }"
+      >
+        <div class="user-avatar">
+          <img src="{{ item.photo | pipeHostFile }}" alt="" />
+        </div>
+        <div class="box-group-detail">
+          <div class="box-group-title">
+            <div class="box-group-title-name">
+              <span>
+                {{ item.chatName }}
+              </span>
             </div>
-        </li>
-    </ul>
+            <div class="box-group-title-time">
+              <span>{{ item.updatedAt | chatDate }}</span>
+            </div>
+          </div>
+          <div class="box-group-last-message">
+            <ng-container *ngIf="item.lastestMessage != null">
+              <ng-container
+                *ngIf="item.lastestMessage.length > 30; else elseTemplate"
+              >
+                <span> {{ item.lastestMessage.substring(0, 30) }}... </span>
+              </ng-container>
+              <ng-template #elseTemplate>
+                <span>
+                  {{ item.lastestMessage }}
+                </span>
+              </ng-template>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>

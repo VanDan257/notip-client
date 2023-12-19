@@ -8,8 +8,7 @@ export class PipeHostFilePipe implements PipeTransform {
   // Nếu ảnh dạng base64 => giữ nguyên base6 hiển thị
   // Ngược lại => Lấy ảnh qua server
   transform(value: any, ...args: any[]): any {
-    if (value == null || value.indexOf('data:image/png;base64,') >= 0)
-      return value;
-    return environment.apiUrl + 'img?key=' + value;
+    if (value.includes('http')) return value;
+    return '/assets/images/' + value;
   }
 }

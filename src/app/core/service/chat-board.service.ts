@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppRoutingApi } from 'src/app/app-routing-api';
 import { Group } from '../models/group';
@@ -13,30 +13,27 @@ export class ChatBoardService {
     return this.http.get(AppRoutingApi.GetChatHistory);
   }
 
-  getChatBoardInfo(groupCode: string, contactCode: string) {
-    return this.http.get(AppRoutingApi.GetChatBoardInfo, {
-      params: {
-        groupCode,
-        contactCode,
-      },
-    });
+  getChatBoardInfo(groupCode: string) {
+    return this.http.get(AppRoutingApi.GetChatBoardInfo + '/' + groupCode);
+  }
+
+  searchChat(keySearch: string){
+    return this.http.get(AppRoutingApi.SearchChat + '/' + keySearch);
   }
 
   addGroup(group: any) {
     return this.http.post(AppRoutingApi.AddGroup, group);
   }
 
-  sendMessage(groupCode: string, message: any) {
+  sendMessage(message: any) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
     console.log('message: ', message);
-    return this.http.post(AppRoutingApi.SendMessage, message, {
-      params: {
-        groupCode: groupCode == null ? '' : groupCode,
-      },
-    });
+    return this.http.post(AppRoutingApi.SendMessage, message);
   }
 
-  getMessageByGroup(groupCode: any) {
-    return this.http.get(AppRoutingApi.GetMessageByGroup + '/' + groupCode);
+  getMessageByGroup(chatId: any) {
+    return this.http.get(AppRoutingApi.GetMessageByGroup + '/' + chatId);
   }
 
   getMessageByContact(contactCode: string) {
@@ -50,6 +47,6 @@ export class ChatBoardService {
   }
 
   updateGroupAvatar(group: any) {
-    return this.http.put(AppRoutingApi.UpdateGroupAvatar, group);
+    return this.http.post(AppRoutingApi.UpdateGroupAvatar, group);
   }
 }

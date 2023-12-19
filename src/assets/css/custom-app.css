@@ -55,6 +55,7 @@ label {
 
 .body-vchat {
   display: flex;
+  width: 100%;
 }
 
 .body-vchat .body-vchat-left {
@@ -355,6 +356,12 @@ label {
   padding: 11px 20px;
 }
 
+.box-chat-send-text .emojionearea .emojionearea-editor {
+  height: 45px;
+  min-height: unset;
+  max-height: unset;
+}
+
 .btn-send-message {
   width: 50px;
   display: flex;
@@ -446,15 +453,27 @@ label {
   margin-left: 5px;
 }
 
+.box-message-content-message {
+  position: relative;
+}
+
 .box-message-send .box-message-content-message-content {
   background: white;
-  padding: 15px 18px 15px 15px;
+  padding: 30px 18px 15px 15px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   border-top-left-radius: 10px;
   font-size: 14px;
   box-shadow: 0 1px 5px 2px rgb(0 0 0 / 10%);
   max-width: 600px;
+}
+
+.box-message-content-message-sender-name {
+  position: absolute;
+  font-size: 0.7rem;
+  color: var(--gray);
+  top: 10px;
+  left: 16px;
 }
 
 .box-message-send .box-message-content-message-time {

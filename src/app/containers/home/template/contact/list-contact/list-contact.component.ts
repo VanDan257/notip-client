@@ -44,13 +44,13 @@ export class ListContactComponent implements OnInit {
   }
 
   removeItem(obj: any) {
-    this.contacts = this.contacts.filter((c) => c.FullName !== obj);
+    this.contacts = this.contacts.filter((c) => c.name !== obj);
   }
 
   uniqByFilter() {
     this.contacts = this.contacts.filter(
       (value, index, array) =>
-        index == array.findIndex((item) => item.FullName == value.FullName)
+        index == array.findIndex((item) => item.name == value.name)
     );
   }
 }

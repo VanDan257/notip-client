@@ -15,6 +15,7 @@ import { ChatBoardService } from 'src/app/core/service/chat-board.service';
 import { UserService } from 'src/app/core/service/user.service';
 import { SignalRService } from 'src/app/core/service/signalR.service';
 import { Constants } from 'src/app/core/utils/constants';
+import {SocketService} from "../../core/service/socket.service";
 declare const $: any;
 
 @Component({
@@ -55,6 +56,8 @@ export class HomeComponent implements OnInit {
 
   memberInNewGroup: User[] = [];
 
+  receivedMessages: any[] = [];
+
   filter = {
     keySearch: '',
     groupName: '',
@@ -72,21 +75,36 @@ export class HomeComponent implements OnInit {
     private ngZone: NgZone,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private socketService: SocketService
   ) {}
+
+  public messageArray: {user: string, message: string}[] = [];
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
-    this.signalRService.startConnection();
-    // lắng nghe tin nhắn trả về => xử lý
-    this.signalRService.hubConnection.on('messageHubListener', (data) => {
-      console.log('messageHubListener: ', data);
-      this.listMessage.getData();
-    });
+    // this.signalRService.startConnection();
+    // // lắng nghe tin nhắn trả về => xử lý
+    // this.signalRService.hubConnection.on('messageHubListener', (data) => {
+    //   console.log('messageHubListener: ', data);
+    //   this.listMessage.getData();
+    // });
     // lắng nghe cuôc gọi đến => xử lý
-    this.signalRService.hubConnection.on('callHubListener', (data) => {
-      console.log('callHubListener');
-      this.openModalCall(data);
+    // this.signalRService.hubConnection.on('callHubListener', (data) => {
+    //   this.openModalCall(data);
+    // });
+
+    // this.socketService.onMessageReceived().subscribe((message: any) => {
+    //   this.listMessage.getData();
+    // });
+
+    $('.tab-header-search-input').on('input', () => {
+      this.tabIndexSelected = 4;
+    });
+    $('.tab-header-search-input').on('blur', () => {
+      if ($('.tab-header-search-input').val() == ""){
+        this.tabIndexSelected = 0;
+      }
     });
   }
 
@@ -117,7 +135,8 @@ export class HomeComponent implements OnInit {
   searchContact() {
     this.userService.searchContact(this.filter.keySearch).subscribe({
       next: (response: any) => {
-        this.contactSearchs = JSON.parse(response['data']);
+        console.log(response);
+        this.contactSearchs = response;
       },
       error: (error) => console.log('error: ', error),
     });
@@ -184,9 +203,10 @@ export class HomeComponent implements OnInit {
           );
           $('#modalProfile').modal('hide');
         },
-        error: (error) => this.toastr.error('Cập nhật thất bại', 'Thông tin cá nhân', {
-          timeOut: 2000,
-        }),
+        error: (error) =>
+          this.toastr.error('Cập nhật thất bại', 'Thông tin cá nhân', {
+            timeOut: 2000,
+          }),
       });
   }
 
@@ -198,9 +218,9 @@ export class HomeComponent implements OnInit {
     this.filter.groupName = '';
     this.userService.getContact().subscribe({
       next: (response: any) => {
-        this.memberInNewGroup = JSON.parse(response['data']);
-        this.memberInNewGroup.forEach((x) => (x.fieldStamp1 = false));
-        this.removeItemGroup(this.currentUser.FullName);
+        this.memberInNewGroup = response;
+        // this.memberInNewGroup.forEach((x) => (x.fieldStamp1 = false));
+        this.removeItemGroup(this.currentUser.name);
         this.uniqByFilterGroup();
         $('#modalAddGroup').modal();
       },
@@ -209,21 +229,21 @@ export class HomeComponent implements OnInit {
   }
 
   removeItemGroup(obj: any) {
-    this.memberInNewGroup = this.memberInNewGroup.filter(c => c.FullName !== obj)
+    this.memberInNewGroup = this.memberInNewGroup.filter((c) => c.name !== obj);
   }
   uniqByFilterGroup() {
     this.memberInNewGroup = this.memberInNewGroup.filter(
       (value, index, array) =>
-        index == array.findIndex((item) => item.FullName == value.FullName)
+        index == array.findIndex((item) => item.name == value.name)
     );
   }
 
   addMemberToGroup(member: User) {
-    member.fieldStamp1 = true;
+    // member.fieldStamp1 = true;
   }
 
   removeMemberToGroup(member: User) {
-    member.fieldStamp1 = false;
+    // member.fieldStamp1 = false;
   }
 
   submitAddGroup() {
@@ -234,30 +254,35 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    if (this.memberInNewGroup.filter((x) => x.fieldStamp1).length == 0) {
-      this.toastr.error('Danh sách thành viên không được để trống', 'Thành viên nhóm', {
-        timeOut: 2000,
-      });
-      return;
-    }
+    // if (this.memberInNewGroup.filter((x) => x.fieldStamp1).length == 0) {
+    //   this.toastr.error(
+    //     'Danh sách thành viên không được để trống',
+    //     'Thành viên nhóm',
+    //     {
+    //       timeOut: 2000,
+    //     }
+    //   );
+    //   return;
+    // }
 
-    this.chatBoardService
-      .addGroup({
-        Name: this.filter.groupName,
-        Users: this.memberInNewGroup.filter((x) => x.fieldStamp1),
-      })
-      .subscribe({
-        next: (response: any) => {
-          this.toastr.success('Thêm thành công', 'Thêm vào nhóm', {
-            timeOut: 2000,
-          });
-          $('#modalAddContact').modal('hide');
-          this.listMessage.getData();
-        },
-        error: (error) => this.toastr.error('Thêm thất bại', 'Thêm vào nhóm', {
-          timeOut: 2000,
-        }),
-      });
+    // this.chatBoardService
+    //   .addGroup({
+    //     Name: this.filter.groupName,
+    //     Users: this.memberInNewGroup.filter((x) => x.fieldStamp1),
+    //   })
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       this.toastr.success('Thêm thành công', 'Thêm vào nhóm', {
+    //         timeOut: 2000,
+    //       });
+    //       $('#modalAddContact').modal('hide');
+    //       this.listMessage.getData();
+    //     },
+    //     error: (error) =>
+    //       this.toastr.error('Thêm thất bại', 'Thêm vào nhóm', {
+    //         timeOut: 2000,
+    //       }),
+    //   });
   }
 
   //#endregion

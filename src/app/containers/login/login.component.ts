@@ -3,7 +3,7 @@ import {
   NgZone,
   OnInit,
   ElementRef,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -38,19 +38,18 @@ export class LoginComponent implements OnInit {
     private renderer: Renderer2
   ) {}
 
-  
   ngOnInit() {
     this.formData = this.formBuilder.group({
-      UserName: ['', Validators.required],
-      Password: ['', Validators.required],
+      email: ['', Validators.required],
+      password: ['', Validators.required],
     });
 
     this.formDataSignup = this.formBuilder2.group({
-      FullName: ['', Validators.required],
-      UserName: ['', Validators.required],
-      Email: ['', Validators.required],
-      Phone: ['', Validators.required],
-      Password: ['', Validators.required],
+      // username: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: ['', Validators.required],
+      password: ['', Validators.required],
     });
     this.signUp = this.elment.nativeElement.querySelector('#sign-up-btn');
     this.signIn = this.elment.nativeElement.querySelector('#sign-in-btn');
@@ -75,16 +74,19 @@ export class LoginComponent implements OnInit {
           });
           this.navigate('/');
         },
-        error: (error) => this.toastr.error('Lỗi, vui lòng thực hiện lại', 'Thất bại', {
-          timeOut: 2000,
-        }),
+        error: (error) => {
+          console.log(error);
+          this.toastr.error('Lỗi, vui lòng thực hiện lại', 'Thất bại', {
+            timeOut: 2000,
+          });
+        },
       });
   }
 
   onSubmitSignup() {
     this.submittedSiginup = true;
     if (this.formDataSignup.invalid) {
-      console.log(this.formDataSignup.value)
+      console.log(this.formDataSignup.value);
       return;
     }
     this.spinner.show();
@@ -116,5 +118,4 @@ export class LoginComponent implements OnInit {
     //console.log(this.signIn);
     this.renderer.removeClass(this.container, 'sign-up-mode');
   }
-  
 }

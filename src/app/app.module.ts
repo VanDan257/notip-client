@@ -5,6 +5,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+// import from 'socket.io-client';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +34,10 @@ import { ErrorInterceptor } from './auth/error.interceptor';
 import { ButtonUploadComponent } from './containers/button-upload/button-upload.component';
 
 import { MessageDetailComponent } from './containers/home/template/message/message-detail/message-detail.component';
+import { ListMessageSearchComponent } from './containers/home/template/message/list-message-search/list-message-search.component';
+import {WrappedSocket} from "ngx-socket-io/src/socket-io.service";
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -51,7 +57,8 @@ import { MessageDetailComponent } from './containers/home/template/message/messa
     ListNotificationComponent,
     ChatDatePipe,
     PipeHostFilePipe,
-    ButtonUploadComponent
+    ButtonUploadComponent,
+    ListMessageSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -62,11 +69,14 @@ import { MessageDetailComponent } from './containers/home/template/message/messa
     HttpClientModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
+    SocketIoModule.forRoot(config),
+
   ],
   providers: [
     AuthGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    // WrappedSocket
   ],
   bootstrap: [AppComponent],
 })

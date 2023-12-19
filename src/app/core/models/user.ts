@@ -1,17 +1,17 @@
 export interface User {
-    Code: string;
-    UserName: string;
-    Password: string;
-    FullName: string;
-    Dob: string;
-    Phone: string;
-    Email: string;
-    Address: string;
-    Avatar: string;
-    Gender: string;
-    IsFriend: boolean;
+  id: string;
+  name: string;
+  password: string;
+  // FullName: string;
+  dob: string;
+  phone: string;
+  email: string;
+  address: string;
+  avatar: string;
+  gender: string;
+  // IsFriend: boolean;
 
-    Token: string;
+  token: string;
 
-    fieldStamp1: boolean;
+  // fieldStamp1: boolean;
 }
