@@ -28,7 +28,6 @@ export class ChatBoardService {
   sendMessage(message: any) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
-    console.log('message: ', message);
     return this.http.post(AppRoutingApi.SendMessage, message);
   }
 

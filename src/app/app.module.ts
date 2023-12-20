@@ -76,7 +76,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     AuthGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    // WrappedSocket
   ],
   bootstrap: [AppComponent],
 })

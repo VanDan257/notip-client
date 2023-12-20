@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { Message } from 'src/app/core/models/message';
@@ -17,7 +17,7 @@ declare const $: any;
   templateUrl: './message-detail.component.html',
   styleUrls: ['./message-detail.component.css'],
 })
-export class MessageDetailComponent implements OnInit {
+export class MessageDetailComponent implements OnInit, AfterViewInit {
   @Input() group!: any;
   @Input() contact!: User;
 
@@ -30,17 +30,13 @@ export class MessageDetailComponent implements OnInit {
     private callService: CallService,
     private chatBoardService: ChatBoardService,
     private authService: AuthenticationService,
+    private cdr: ChangeDetectorRef,
     // private signalRService: SignalRService,
     private socketService: SocketService
   ) {}
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
-    // this.signalRService.hubConnection.on('messageHubListener', (data) => {
-    //   console.log('messageHubListener:', data);
-    //   this.getMessage();
-    // });
-
 
     this.getMessage();
 
@@ -51,6 +47,23 @@ export class MessageDetailComponent implements OnInit {
         },
       },
     });
+
+    this.setupSocket();
+  }
+
+  setupSocket(){
+    this.socketService.setup(this.currentUser.id);
+
+    // Lắng nghe sự kiện "message recieved" từ máy chủ
+    this.socketService.onMessageReceived();
+    // .subscribe((message) => {
+    //   console.log('Received message:', message);
+    //   // Xử lý thông điệp nhận được từ máy chủ ở đây
+    // });
+  }
+
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
   }
 
   mess() {}
@@ -67,7 +80,6 @@ export class MessageDetailComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.groupInfo = response;
-          console.log(this.groupInfo);
         },
         error: (error) => console.log('error: ', error),
       });
@@ -140,7 +152,6 @@ export class MessageDetailComponent implements OnInit {
       Array.from(filesToUpload).map((file, index) => {
         formData.append('files', file, file.name);
       });
-      console.log(filesToUpload[0]);
       formData.append('chatId', this.group.id);
       formData.append('file', filesToUpload[0]);
       formData.append('content', filesToUpload[0].name);

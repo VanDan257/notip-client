@@ -32,7 +32,7 @@ export class ListMessageComponent implements OnInit {
 
   openMessage(chatId: any) {
     this.chatId = chatId;
-    this.onClick.emit(this.datas.find((x) => x.id == chatId));
     this.socketService.joinRoom(chatId);
+    this.onClick.emit(this.datas.find((x) => x.id == chatId));
   }
 }

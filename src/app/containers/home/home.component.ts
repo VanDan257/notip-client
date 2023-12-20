@@ -98,6 +98,7 @@ export class HomeComponent implements OnInit {
     //   this.listMessage.getData();
     // });
 
+
     $('.tab-header-search-input').on('input', () => {
       this.tabIndexSelected = 4;
     });
@@ -113,6 +114,7 @@ export class HomeComponent implements OnInit {
   }
 
   onClickMessage(group: any) {
+    // this.socketService.joinRoom(group);
     this.filter.group = group;
   }
 
