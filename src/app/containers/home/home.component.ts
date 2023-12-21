@@ -118,9 +118,9 @@ export class HomeComponent implements OnInit {
     this.filter.group = group;
   }
 
-  onClickCall(groupCall: any) {
-    this.filter.groupCall = groupCall;
-  }
+  // onClickCall(groupCall: any) {
+  //   this.filter.groupCall = groupCall;
+  // }
 
   onClickContact(contact: any) {
     this.filter.contact = contact;
@@ -143,17 +143,17 @@ export class HomeComponent implements OnInit {
       error: (error) => console.log('error: ', error),
     });
   }
-
-  submitAddContact(contact: any) {
-    this.userService.addContact(contact).subscribe({
-      next: (response: any) => {
-        this.toastr.success('Thêm thành công');
-        $('#modalAddContact').modal('hide');
-        this.listContact.getContact();
-      },
-      error: (error) => console.log('error: ', error),
-    });
-  }
+  //
+  // submitAddContact(contact: any) {
+  //   this.userService.addContact(contact).subscribe({
+  //     next: (response: any) => {
+  //       this.toastr.success('Thêm thành công');
+  //       $('#modalAddContact').modal('hide');
+  //       this.listContact.getContact();
+  //     },
+  //     error: (error) => console.log('error: ', error),
+  //   });
+  // }
 
   //#endregion
 
@@ -218,16 +218,16 @@ export class HomeComponent implements OnInit {
 
   openModalAddGroup() {
     this.filter.groupName = '';
-    this.userService.getContact().subscribe({
-      next: (response: any) => {
-        this.memberInNewGroup = response;
-        // this.memberInNewGroup.forEach((x) => (x.fieldStamp1 = false));
-        this.removeItemGroup(this.currentUser.name);
-        this.uniqByFilterGroup();
-        $('#modalAddGroup').modal();
-      },
-      error: (error) => console.log('error: ', error),
-    });
+    // this.userService.getContact().subscribe({
+    //   next: (response: any) => {
+    //     this.memberInNewGroup = response;
+    //     // this.memberInNewGroup.forEach((x) => (x.fieldStamp1 = false));
+    //     this.removeItemGroup(this.currentUser.name);
+    //     this.uniqByFilterGroup();
+    //     $('#modalAddGroup').modal();
+    //   },
+    //   error: (error) => console.log('error: ', error),
+    // });
   }
 
   removeItemGroup(obj: any) {

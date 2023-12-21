@@ -17,8 +17,8 @@ export class UserService {
     return this.http.put(AppRoutingApi.UpdateProfile, user);
   }
 
-  getContact() {
-    return this.http.get(AppRoutingApi.GetContact);
+  getContact(statusContact: number) {
+    return this.http.get(AppRoutingApi.GetContact + '/' + statusContact);
   }
 
   searchContact(keySearch: string) {

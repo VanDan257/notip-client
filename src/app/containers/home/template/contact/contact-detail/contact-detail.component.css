@@ -1,0 +1,57 @@
+.header-contact{
+  height: 50px;
+  width: 100%;
+  border-bottom: 1px solid #cccccc;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  background-color: #FFFFFF;
+}
+
+.friend-invite-count{
+  color: var(--gray);
+  font-size: 0.8rem;
+  padding: 12px;
+}
+
+.avatar-user{
+  width: 14rem;
+  height: 12rem;
+  object-fit: cover;
+}
+
+.container-contact{
+  padding: 12px;
+  margin: 0 12px;
+  background-color: #FFFFFF;
+}
+
+.list-contact-card{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card-body .list-btn-option .btn{
+  font-size: 0.8rem;
+}
+
+.search-contact{
+  display: flex;
+  justify-content: space-between;
+  margin: 6px;
+}
+
+.search-contact .search-contact-input{
+  border: 1px solid #cccccc;
+  font-size: 0.8rem;
+  padding: 4px 20px 4px 6px;
+  outline: none;
+  border-radius: 4px;
+}
+
+.search-contact-input:focus{
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}

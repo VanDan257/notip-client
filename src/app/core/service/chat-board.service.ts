@@ -35,10 +35,6 @@ export class ChatBoardService {
     return this.http.get(AppRoutingApi.GetMessageByGroup + '/' + chatId);
   }
 
-  getMessageByContact(contactCode: string) {
-    return this.http.get(AppRoutingApi.GetMessageByContact + '/' + contactCode);
-  }
-
   downloadFileAttachment(path: string) {
     return this.http.get(AppRoutingApi.DownloadFile + '?key=' + path, {
       responseType: 'blob',

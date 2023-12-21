@@ -1,59 +1,32 @@
-<ng-container *ngIf="toggleTabChat; else templateContact">
-    <app-message-detail [contact]="contact"></app-message-detail>
-</ng-container>
-<ng-template #templateContact>
-    <ng-container *ngIf="contact == null; else elseTemplate">
-        <app-default [title]="'Danh bạ'"></app-default>
-    </ng-container>
-    <ng-template #elseTemplate>
-        <div class="main-box-contact">
-            <div class="box-right-content-header-default">
-                <b>Thông tin liên hệ</b>
+<div class="main-box-chat">
+  <div class="box-right-content-header-default">
+    <b>{{title}}</b>
+  </div>
+    <div class="main-box-contact">
+      <div class="friend-invite-count">Lời mời (1)</div>
+      <div class="container-contact">
+        <form class="search-contact">
+          <input type="text" [(ngModel)]="keySearch" class="search-contact-input">
+          <select id="orderByName">
+            <option value="A-Z" name="a-z">A-Z</option>
+            <option value="Z-A" name="z-a">Z-A</option>
+          </select>
+        </form>
+        <div class="list-contact-card">
+          <div class="card" style="width: 14rem;" *ngFor="let contact of contacts">
+            <img [src]="contact.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{contact.name}}</h5>
+              <p class="card-text"></p>
+              <div class="list-btn-option" style="display: flex; justify-content: space-between">
+                <a href="#" class="btn btn-primary">Chấp nhận</a>
+                <a href="#" class="btn btn-secondary">Từ chối</a>
+              </div>
             </div>
-            <div class="box-main-contact">
-                <div class="box-main-contact-body">
-                    <div class="avt-user">
-                        <img [src]="contact.Avatar | pipeHostFile" alt="">
-                    </div>
-                    <div class="mt-2 mb-2">
-                        <h4 class="text-center name-user">
-                            {{contact.FullName}}
-                        </h4>
-                    </div>
-                    <div class="box-main-contact-control">
-                        <div (click)="chat()">
-                            <i class="mdi mdi-message-text"></i>
-                            <span>Nhắn tin</span>
-                        </div>
-                        <div (click)="callVideo()">
-                            <i class="mdi mdi-account-box-outline"></i>
-                            <span>Cuộc gọi video</span>
-                        </div>
-                    </div>
-                    <div class="box-main-contact-body-detail">
-                        <div>
-                            <i class="mdi mdi-gender-male-female icon-info"></i>
-                            <span class="info">{{contact.Gender}}</span>
-                        </div>
-                        <div>
-                            <i class="mdi mdi-cake icon-info"></i>
-                            <span class="info">{{contact.Dob}}</span>
-                        </div>
-                        <div>
-                            <i class="mdi mdi-cellphone icon-info"></i>
-                            <span class="info">{{contact.Phone}}</span>
-                        </div>
-                        <div>
-                            <i class="mdi mdi-email-outline icon-info"></i>
-                            <span class="info">{{contact.Email}}</span>
-                        </div>
-                        <div>
-                            <i class="mdi mdi-map-marker icon-info"></i>
-                            <span class="info">{{contact.Address}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
+
         </div>
-    </ng-template>
-</ng-template>
+
+      </div>
+  </div>
+</div>

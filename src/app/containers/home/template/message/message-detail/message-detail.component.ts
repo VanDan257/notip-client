@@ -37,7 +37,7 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
-
+    console.log('on init');
     this.getMessage();
 
     $('#my-text').emojioneArea({
@@ -69,6 +69,8 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
   mess() {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('on changes');
+
     this.getMessage();
     this.getChatBoardInfo();
     $('.main-box-chat').removeClass('box-contact-info-opened');
@@ -89,9 +91,6 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
     if (this.group != null) {
       this.getMessageByGroup();
     }
-    // else if (this.contact != null) {
-    //   this.getMessageByContact();
-    // }
   }
 
   getMessageByGroup() {

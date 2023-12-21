@@ -9,7 +9,7 @@ import { UserService } from 'src/app/core/service/user.service';
   styleUrls: ['./list-contact.component.css'],
 })
 export class ListContactComponent implements OnInit {
-  @Output() onClick = new EventEmitter<User>();
+  @Output() onClick = new EventEmitter<number>();
 
   contacts: User[] = [];
   currentUser: any = {};
@@ -21,26 +21,26 @@ export class ListContactComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getContact();
+    // this.getContact();
     this.currentUser = this.authService.currentUserValue;
   }
 
-  getContact() {
-    this.userService.getContact().subscribe({
-      next: (response: any) => {
-        this.contacts = JSON.parse(response['data']);
+  // getContact() {
+  //   this.userService.getContact().subscribe({
+  //     next: (response: any) => {
+  //       this.contacts = JSON.parse(response['data']);
+  //
+  //       this.removeItem(this.currentUser.FullName);
+  //       this.uniqByFilter();
+  //       this.itemIndexSelected = -1;
+  //     },
+  //     error: (error) => console.log('error: ', error),
+  //   });
+  // }
 
-        this.removeItem(this.currentUser.FullName);
-        this.uniqByFilter();
-        this.itemIndexSelected = -1;
-      },
-      error: (error) => console.log('error: ', error),
-    });
-  }
-
-  openContact(indexContact: any) {
-    this.itemIndexSelected = indexContact;
-    this.onClick.emit(this.contacts[indexContact]);
+  openContact(index: number) {
+    this.itemIndexSelected = index;
+    this.onClick.emit(this.itemIndexSelected);
   }
 
   removeItem(obj: any) {

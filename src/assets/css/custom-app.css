@@ -188,12 +188,12 @@ label {
   font-size: 13px;
 }
 
-.box-contact:hover,
+/*.box-contact:hover,*/
 .box-call:hover {
   background: #e5f8ff;
 }
 
-.box-contact.active,
+/*.box-contact.active,*/
 .box-call.active {
   background: #e5f8ff;
 }
@@ -259,6 +259,8 @@ label {
 
 .main-box-chat {
   display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
 }
 
 .box-chat {

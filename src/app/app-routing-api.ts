@@ -13,8 +13,6 @@ export class AppRoutingApi {
   static AddGroup = environment.apiUrl + 'chat/groups';
   static SendMessage = environment.apiUrl + 'message/send-message';
   static GetMessageByGroup = environment.apiUrl + 'message/get-messages';
-  static GetMessageByContact =
-    environment.apiUrl + 'chatBoards/get-message-by-contact';
   static UpdateGroupAvatar =
     environment.apiUrl + 'chat/update-photo-chat';
 
@@ -26,7 +24,7 @@ export class AppRoutingApi {
 
   static GetProfile = environment.apiUrl + 'users/profile';
   static UpdateProfile = environment.apiUrl + 'users/profile';
-  static GetContact = environment.apiUrl + 'users/contacts';
+  static GetContact = environment.apiUrl + 'friend/get-list-contact';
   static SearchContact = environment.apiUrl + 'user/search';
   static AddContact = environment.apiUrl + 'users/contacts';
 }
