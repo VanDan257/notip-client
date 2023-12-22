@@ -37,7 +37,6 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
-    console.log('on init');
     this.getMessage();
 
     $('#my-text').emojioneArea({
@@ -69,7 +68,6 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
   mess() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('on changes');
 
     this.getMessage();
     this.getChatBoardInfo();
@@ -130,13 +128,12 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
     };
 
     this.chatBoardService.sendMessage(message).subscribe({
-      next: (response: any) => (this.textMessage = ''),
+      next: (response: any) => {
+        this.textMessage = ''
+        this.socketService.sendMessage(message);
+      },
       error: (error) => console.log('error: ', error),
     });
-
-    this.socketService.sendMessage(message);
-
-    this.textMessage = '';
 
     $('.emojionearea-editor').html('');
   }

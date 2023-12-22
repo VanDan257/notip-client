@@ -53,9 +53,8 @@
       <div class="tab-header">
 
         <div class="tab-header-search">
-          <input type="text" class="tab-header-search-input" autocomplete="false" placeholder="Tìm kiếm tên, email, sđt" [(ngModel)]="filter.keySearch" >
+          <input type="text" class="tab-header-search-input" id="search-contact" autocomplete="false" placeholder="Tìm kiếm tên, email, sđt" [(ngModel)]="search" >
           <button
-            (click)="searchContact()"
             type="button"
             class="tab-header-search-btn"
           ><i class="fa fa-solid fa-magnifying-glass"></i></button>
@@ -71,8 +70,8 @@
         </div>
         <div [hidden]="tabIndexSelected != 4">
           <app-list-message-search
-            #listMessage
-            [keySearch]="filter.keySearch"
+            #listMessageSearch
+            (keySearch)="searchContact($event)"
             (onClick)="onClickMessage($event)"
           ></app-list-message-search>
         </div>

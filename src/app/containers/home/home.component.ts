@@ -16,6 +16,7 @@ import { UserService } from 'src/app/core/service/user.service';
 import { SignalRService } from 'src/app/core/service/signalR.service';
 import { Constants } from 'src/app/core/utils/constants';
 import {SocketService} from "../../core/service/socket.service";
+import {ListMessageSearchComponent} from "./template/message/list-message-search/list-message-search.component";
 declare const $: any;
 
 @Component({
@@ -27,8 +28,10 @@ export class HomeComponent implements OnInit {
   @ViewChild('listMessage', { static: true })
   listMessage!: ListMessageComponent;
   @ViewChild('listCall', { static: true }) listCall!: ListCallComponent;
+  @ViewChild('listMessageSearch', { static: true }) listMessageSearch!: ListMessageSearchComponent;
   @ViewChild('listContact', { static: true })
   listContact!: ListContactComponent;
+  search: string = '';
 
   currentUser: any = {};
   userProfile: User | any = {};
@@ -98,11 +101,20 @@ export class HomeComponent implements OnInit {
     //   this.listMessage.getData();
     // });
 
-
-    $('.tab-header-search-input').on('input', () => {
+    // let valSearch = $('#search-contact').val();
+    $('#search-contact').on('input', () => {
       this.tabIndexSelected = 4;
-    });
-    $('.tab-header-search-input').on('blur', () => {
+      if(this.search)
+      {
+        this.listMessageSearch.searchGroup(this.search)
+      }
+    })
+
+
+    // $('.tab-header-search-input').on('input', () => {
+    //   this.tabIndexSelected = 4;
+    // });
+    $('#search-contact').on('blur', () => {
       if ($('.tab-header-search-input').val() == ""){
         this.tabIndexSelected = 0;
       }
@@ -134,14 +146,15 @@ export class HomeComponent implements OnInit {
     $('#modalAddContact').modal();
   }
 
-  searchContact() {
-    this.userService.searchContact(this.filter.keySearch).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        this.contactSearchs = response;
-      },
-      error: (error) => console.log('error: ', error),
-    });
+  searchContact(data: any) {
+    this.search = data;
+    // this.userService.searchContact(this.filter.keySearch).subscribe({
+    //   next: (response: any) => {
+    //     console.log(response);
+    //     this.contactSearchs = response;
+    //   },
+    //   error: (error) => console.log('error: ', error),
+    // });
   }
   //
   // submitAddContact(contact: any) {
@@ -170,7 +183,7 @@ export class HomeComponent implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
-          this.userProfile = JSON.parse(response['data']);
+          this.userProfile = response;
           $('#modalProfile').modal();
         },
         error: (error) => console.log('error: ', error),

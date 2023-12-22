@@ -5,6 +5,7 @@ import { AppRoutingApi } from 'src/app/app-routing-api';
 import { environment } from "../../../environments/environment";
 import {Message} from "../models/message";
 import {Observable, Subject} from "rxjs";
+import {MessageDetailComponent} from "../../containers/home/template/message/message-detail/message-detail.component";
 
 @Injectable({
   providedIn: 'root'
@@ -69,13 +70,13 @@ import {Observable, Subject} from "rxjs";
 
 
 export class SocketService {
-  constructor(private socket: Socket) {}
+  constructor(private socket: Socket, private messageDetail: MessageDetailComponent) {}
   setup(userData: any) {
     this.socket.emit('setup', userData);
   }
 
   joinRoom(room: string) {
-    this.socket.emit('join room', room);
+    this.socket.emit('join-room', { chatId: room });
   }
 
   sendTyping(room: string) {
@@ -86,8 +87,8 @@ export class SocketService {
     this.socket.emit('stop typing', room);
   }
 
-  sendMessage(newMessage: any) {
-    this.socket.emit('new message', newMessage);
+  sendMessage(payload: any) {
+    this.socket.emit('new-message', payload);
   }
 
   onConnected() {
@@ -103,9 +104,9 @@ export class SocketService {
   }
 
   onMessageReceived() {
-    return this.socket.on('message received', (message: Message) => {
+    return this.socket.on('message-received', (message: Message) => {
       // Xử lý dữ liệu nhận được khi sự kiện "message received" được gửi từ server
-      console.log('Received message:', message);
+      this.messageDetail.getMessage();
     });
   }
 }

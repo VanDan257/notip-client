@@ -10,10 +10,9 @@ import {SocketService} from "../../../../../core/service/socket.service";
 })
 export class ListMessageComponent implements OnInit {
   @Output() onClick = new EventEmitter<Group>();
-  @Output() keySearch: string | undefined;
 
   datas: Group[] = [];
-  chatId!: string;
+  chatId!: 'roomName';
 
   constructor(private chatBoardService: ChatBoardService, private socketService: SocketService) {}
 

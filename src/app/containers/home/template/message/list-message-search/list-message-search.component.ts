@@ -9,7 +9,7 @@ import {ChatBoardService} from "../../../../../core/service/chat-board.service";
 })
 export class ListMessageSearchComponent {
   @Output() onClick = new EventEmitter<Group>();
-  @Input() keySearch: string | undefined;
+  @Output() keySearch = new EventEmitter<Group>();
 
   datas: Group[] = [];
   chatId!: string;
@@ -17,11 +17,20 @@ export class ListMessageSearchComponent {
   constructor(private chatBoardService: ChatBoardService) {}
 
   ngOnInit() {
-    this.searchGroup();
+    // this.searchGroup();
   }
-  searchGroup() {
+
+  stringSearch: string = '';
+
+  // onDataChange(newValue: any) {
+  //   this.stringSearch = newValue;
+  //   this.keySearch.emit(newValue);
+  //   console.log(this.stringSearch);
+  // }
+
+  searchGroup(search: string) {
     if(this.keySearch!= null){
-      this.chatBoardService.searchChat(this.keySearch).subscribe({
+      this.chatBoardService.searchChat(search).subscribe({
         next: (response: any) => {
           this.datas = response;
           console.log(this.datas);
