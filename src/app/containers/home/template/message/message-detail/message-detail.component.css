@@ -18,3 +18,18 @@
 .emojionearea .emojionearea-editor {
   min-height: 1em;
 }
+
+.input-name-group{
+  border: none;
+  outline: none;
+  background-color: transparent;
+  text-align: center;
+}
+
+.edit-name-group{
+  top: 0;
+  left: 100%;
+  font-size: 0.6rem;
+  border: none;
+  outline: none;
+}

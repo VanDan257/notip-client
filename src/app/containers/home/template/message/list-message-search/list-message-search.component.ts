@@ -20,13 +20,10 @@ export class ListMessageSearchComponent {
     // this.searchGroup();
   }
 
-  stringSearch: string = '';
-
-  // onDataChange(newValue: any) {
-  //   this.stringSearch = newValue;
-  //   this.keySearch.emit(newValue);
-  //   console.log(this.stringSearch);
-  // }
+  openMessage(chatId: any) {
+    this.chatId = chatId;
+    this.onClick.emit(this.datas.find((x) => x.id == chatId));
+  }
 
   searchGroup(search: string) {
     if(this.keySearch!= null){

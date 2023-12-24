@@ -27,6 +27,10 @@ export class AuthenticationService {
     );
   }
 
+  updateCurrentUser(currentUser: any){
+    localStorage.setItem(Constants.LOCAL_STORAGE_KEY.SESSION, JSON.stringify(currentUser));
+  }
+
   login(params: any) {
     return this.http.post(AppRoutingApi.Login, params).pipe(
       map((response: any) => {

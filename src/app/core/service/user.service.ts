@@ -13,19 +13,20 @@ export class UserService {
     return this.http.get(AppRoutingApi.GetProfile);
   }
 
-  updateProfile(user: User) {
-    return this.http.put(AppRoutingApi.UpdateProfile, user);
+  updateProfile(userProfile: User) {
+    console.log(userProfile);
+    return this.http.post(AppRoutingApi.UpdateProfile, userProfile);
   }
 
-  getContact(statusContact: number) {
-    return this.http.get(AppRoutingApi.GetContact + '/' + statusContact);
+  updateAvatar(file: any){
+    return this.http.post(AppRoutingApi.UpdateAvatar, file);
   }
 
   searchContact(keySearch: string) {
     return this.http.get(AppRoutingApi.SearchContact + '/' + keySearch);
   }
 
-  addContact(contact: User) {
-    return this.http.post(AppRoutingApi.AddContact, contact);
+  addContact(contact: any) {
+    return this.http.post(AppRoutingApi.AddContactIntoGroup, contact);
   }
 }

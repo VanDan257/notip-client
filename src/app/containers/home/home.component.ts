@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -17,6 +17,7 @@ import { SignalRService } from 'src/app/core/service/signalR.service';
 import { Constants } from 'src/app/core/utils/constants';
 import {SocketService} from "../../core/service/socket.service";
 import {ListMessageSearchComponent} from "./template/message/list-message-search/list-message-search.component";
+
 declare const $: any;
 
 @Component({
@@ -25,15 +26,14 @@ declare const $: any;
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('listMessage', { static: true })
-  listMessage!: ListMessageComponent;
+  @ViewChild('listMessage', { static: true }) listMessage!: ListMessageComponent;
   @ViewChild('listCall', { static: true }) listCall!: ListCallComponent;
   @ViewChild('listMessageSearch', { static: true }) listMessageSearch!: ListMessageSearchComponent;
-  @ViewChild('listContact', { static: true })
-  listContact!: ListContactComponent;
+  @ViewChild('listContact', { static: true }) listContact!: ListContactComponent;
   search: string = '';
 
   currentUser: any = {};
+  currentGroup: any = {};
   userProfile: User | any = {};
 
   tabControls: any[] = [
@@ -79,29 +79,26 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private inpFileElement: ElementRef
   ) {}
 
   public messageArray: {user: string, message: string}[] = [];
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
-    // this.signalRService.startConnection();
-    // // lắng nghe tin nhắn trả về => xử lý
-    // this.signalRService.hubConnection.on('messageHubListener', (data) => {
-    //   console.log('messageHubListener: ', data);
-    //   this.listMessage.getData();
-    // });
     // lắng nghe cuôc gọi đến => xử lý
     // this.signalRService.hubConnection.on('callHubListener', (data) => {
     //   this.openModalCall(data);
     // });
 
-    // this.socketService.onMessageReceived().subscribe((message: any) => {
-    //   this.listMessage.getData();
-    // });
+    this.socketService.onMessageReceived().subscribe({
+      next: (response) => {
+        this.listMessage.getData()
+      }
+    })
 
-    // let valSearch = $('#search-contact').val();
+
     $('#search-contact').on('input', () => {
       this.tabIndexSelected = 4;
       if(this.search)
@@ -110,10 +107,6 @@ export class HomeComponent implements OnInit {
       }
     })
 
-
-    // $('.tab-header-search-input').on('input', () => {
-    //   this.tabIndexSelected = 4;
-    // });
     $('#search-contact').on('blur', () => {
       if ($('.tab-header-search-input').val() == ""){
         this.tabIndexSelected = 0;
@@ -128,6 +121,7 @@ export class HomeComponent implements OnInit {
   onClickMessage(group: any) {
     // this.socketService.joinRoom(group);
     this.filter.group = group;
+    this.currentGroup = group
   }
 
   // onClickCall(groupCall: any) {
@@ -140,37 +134,16 @@ export class HomeComponent implements OnInit {
 
   //#region thêm mới liên hệ
   contactSearchs: User[] = [];
-  openModalAddContact() {
-    this.filter.keySearch = '';
-    this.contactSearchs = [];
-    $('#modalAddContact').modal();
-  }
 
   searchContact(data: any) {
-    this.search = data;
-    // this.userService.searchContact(this.filter.keySearch).subscribe({
-    //   next: (response: any) => {
-    //     console.log(response);
-    //     this.contactSearchs = response;
-    //   },
-    //   error: (error) => console.log('error: ', error),
-    // });
+    this.userService.searchContact(data).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.contactSearchs = response;
+      },
+      error: (error) => console.log('error: ', error),
+    });
   }
-  //
-  // submitAddContact(contact: any) {
-  //   this.userService.addContact(contact).subscribe({
-  //     next: (response: any) => {
-  //       this.toastr.success('Thêm thành công');
-  //       $('#modalAddContact').modal('hide');
-  //       this.listContact.getContact();
-  //     },
-  //     error: (error) => console.log('error: ', error),
-  //   });
-  // }
-
-  //#endregion
-
-  //#region cập nhật profile
 
   openModalProfile() {
     this.spinner.show();
@@ -190,9 +163,28 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  onloadAvatar(img: any) {
-    this.userProfile.Avatar = img;
-    console.log('onloadAvatar');
+  onloadAvatar(evt: any) {
+    if (evt.target.files && evt.target.files[0]) {
+      let filesToUpload: any[] = [];
+      for (let i = 0; i < evt.target.files.length; i++) {
+        filesToUpload.push(evt.target.files[i]);
+      }
+      const file = new FormData();
+
+      file.append('file', filesToUpload[0]);
+
+      this.userService.updateAvatar(file).subscribe({
+        next: (response) => {
+          let user: any = response;
+          this.currentUser.photoUrl = user.avatar;
+          this.authService.updateCurrentUser(this.currentUser);
+          this.toastr.success('Cập nhật thành công ảnh đại diện', 'Thông tin cá nhân', {
+            timeOut: 2000,
+          });
+        },
+        error: (error) => console.log('error: ', error),
+      });
+    }
   }
 
   updateProfile() {
@@ -206,16 +198,12 @@ export class HomeComponent implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
-          this.userProfile = JSON.parse(response['data']);
+          this.userProfile = response;
           this.toastr.success('Cập nhật thành công', 'Thông tin cá nhân', {
             timeOut: 2000,
           });
-          this.currentUser.Avatar = this.userProfile.Avatar;
-          this.currentUser.FullName = this.userProfile.FullName;
-          localStorage.setItem(
-            Constants.LOCAL_STORAGE_KEY.SESSION,
-            JSON.stringify(this.currentUser)
-          );
+          this.currentUser.name = this.userProfile.name;
+          this.authService.updateCurrentUser(this.currentUser);
           $('#modalProfile').modal('hide');
         },
         error: (error) =>
@@ -338,4 +326,29 @@ export class HomeComponent implements OnInit {
   navigate(path: string): void {
     this.ngZone.run(() => this.router.navigateByUrl(path)).then();
   }
+
+  chooseFile() {
+    this.inpFileElement.nativeElement.click();
+  }
+
+  // onFileChange(evt: any) {
+  //   if (evt.target.files && evt.target.files[0]) {
+  //     let filesToUpload: any[] = [];
+  //     for (let i = 0; i < evt.target.files.length; i++) {
+  //       filesToUpload.push(evt.target.files[i]);
+  //     }
+  //
+  //     const file = new FormData();
+  //
+  //     file.append('file', filesToUpload[0]);
+  //
+  //     this.userService.updateAvatar(file).subscribe({
+  //       next: (response) => {
+  //         console.log('response: ', response);
+  //         this.onloadAvatar();
+  //       },
+  //       error: (error) => console.log('error: ', error),
+  //     });
+  //   }
+  // }
 }

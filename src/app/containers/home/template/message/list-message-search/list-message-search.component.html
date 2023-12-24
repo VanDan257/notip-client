@@ -1,1 +1,26 @@
-<p>list-message-search works!</p>
+<div class="box-left-content-title">
+  <strong class="size-13">Danh sách liên hệ</strong>
+</div>
+<div class="box-left-content-body">
+  <ul class="list-unstyled">
+    <li *ngFor="let item of datas; index as index">
+      <div
+        (click)="openMessage(item.id)"
+        class="box-group"
+      >
+        <div class="user-avatar">
+          <img src="{{ item.photo | pipeHostFile }}" alt="" />
+        </div>
+        <div class="box-group-detail justify-content-center">
+          <div class="box-group-title">
+            <div class="box-group-title-name">
+              <span>
+                {{ item.chatName }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

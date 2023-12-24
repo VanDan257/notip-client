@@ -242,6 +242,7 @@ label {
 .box-right-content-header-default {
   text-align: center;
   border-bottom: 1px solid #dadce0;
+  background-color: #FFFFFF;
 }
 
 .box-right-content-header-default b {
@@ -259,8 +260,13 @@ label {
 
 .main-box-chat {
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
   background-color: #f1f1f1;
+}
+
+.main-box-contact{
+  background-color: #f1f1f1;
+  height: calc(100vh - 63px);
 }
 
 .box-chat {
@@ -455,27 +461,21 @@ label {
   margin-left: 5px;
 }
 
-.box-message-content-message {
-  position: relative;
-}
-
 .box-message-send .box-message-content-message-content {
   background: white;
-  padding: 30px 18px 15px 15px;
+  padding: 12px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   border-top-left-radius: 10px;
-  font-size: 14px;
+  font-size: 0.8rem;
   box-shadow: 0 1px 5px 2px rgb(0 0 0 / 10%);
   max-width: 600px;
 }
 
 .box-message-content-message-sender-name {
-  position: absolute;
   font-size: 0.7rem;
-  color: var(--gray);
-  top: 10px;
-  left: 16px;
+  color: var(--bs-gray);
+  margin-bottom: 4px;
 }
 
 .box-message-send .box-message-content-message-time {
@@ -717,7 +717,7 @@ label {
 }
 
 .img-message {
-  width: 150px;
+  max-width: 35rem;
   border: 1px solid #dcdcdc;
   padding: 2px;
   background: white;

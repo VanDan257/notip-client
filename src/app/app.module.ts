@@ -9,6 +9,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 // import from 'socket.io-client';
 
 import { AppRoutingModule } from './app-routing.module';
+import { environment } from '../environments/environment'
 import { AppComponent } from './app.component';
 
 import { HomeComponent } from './containers/home/home.component';
@@ -37,7 +38,7 @@ import { MessageDetailComponent } from './containers/home/template/message/messa
 import { ListMessageSearchComponent } from './containers/home/template/message/list-message-search/list-message-search.component';
 import {WrappedSocket} from "ngx-socket-io/src/socket-io.service";
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: environment.chatHub, options: {} };
 
 @NgModule({
   declarations: [

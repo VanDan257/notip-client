@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { CallService } from 'src/app/core/service/call.service';
 import {UserService} from "../../../../../core/service/user.service";
 import {User} from "../../../../../core/models/user";
+import {FriendService} from "../../../../../core/service/friend.service";
 
 declare const $: any;
 @Component({
@@ -12,33 +13,50 @@ declare const $: any;
 export class ContactDetailComponent implements OnInit, OnChanges {
   @Input() contact!: any;
   contacts: User[] = [];
-  keySearch!: string;
+  keySearchFriend!: string;
+  keySearchInvitationFriend!: string;
   title: string = "Lời mời kết bạn";
 
   toggleTabChat: boolean = false;
 
   constructor(
     private callService: CallService,
-    private userService: UserService
+    private userService: UserService,
+    private friendService: FriendService
   ) { }
 
   ngOnInit() {
     if (this.contact === null || this.contact === undefined) {
       this.contact = 1;
     }
-    this.getListContacts();
+    this.getListFriendInvites();
+
+    $('#range-by-name-list-friend-invitation').on('input', () => {
+
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getListContacts();
-    if(this.contact == 1)
+    if(this.contact == 1){
+      this.getListFriendInvites();
       this.title = "Lời mời kết bạn";
-    else if(this.contact == 2)
+    }
+    else if(this.contact == 2){
+      this.getListFriends();
       this.title = "Danh sách bạn bè";
+    }
   }
 
-  getListContacts(){
-    this.userService.getContact(this.contact).subscribe({
+  getListFriends(){
+    this.friendService.getListFriends().subscribe({
+      next: (response: any) => {this.contacts = response
+        console.log(response)},
+      error: (e) => console.log(e)
+    });
+  }
+
+  getListFriendInvites(){
+    this.friendService.getListFriendInvites().subscribe({
       next: (response: any) => {this.contacts = response
         console.log(response)},
       error: (e) => console.log(e)

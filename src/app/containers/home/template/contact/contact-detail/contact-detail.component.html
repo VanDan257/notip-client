@@ -1,32 +1,62 @@
-<div class="main-box-chat">
+<div class="main-box-contact">
   <div class="box-right-content-header-default">
     <b>{{title}}</b>
   </div>
     <div class="main-box-contact">
-      <div class="friend-invite-count">Lời mời (1)</div>
-      <div class="container-contact">
-        <form class="search-contact">
-          <input type="text" [(ngModel)]="keySearch" class="search-contact-input">
-          <select id="orderByName">
-            <option value="A-Z" name="a-z">A-Z</option>
-            <option value="Z-A" name="z-a">Z-A</option>
-          </select>
-        </form>
-        <div class="list-contact-card">
-          <div class="card" style="width: 14rem;" *ngFor="let contact of contacts">
-            <img [src]="contact.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{contact.name}}</h5>
-              <p class="card-text"></p>
-              <div class="list-btn-option" style="display: flex; justify-content: space-between">
-                <a href="#" class="btn btn-primary">Chấp nhận</a>
-                <a href="#" class="btn btn-secondary">Từ chối</a>
+      <ng-container *ngIf="contact === 1">
+        <div class="friend-invite-count">Lời mời ({{contacts.length}})</div>
+        <div class="container-contact">
+          <form class="search-contact">
+            <input type="text" placeholder="Tìm kiếm tên, email, sđt" [(ngModel)]="keySearchInvitationFriend" class="search-contact-input">
+            <select class="range-by-name" id="range-by-name-list-friend-invitation">
+              <option value="A-Z" name="a-z">Tên A-Z</option>
+              <option value="Z-A" name="z-a">Tên Z-A</option>
+            </select>
+          </form>
+          <div class="list-contact-card">
+            <div class="card" style="width: 14rem; margin-bottom: 10px; margin-left: 10px" *ngFor="let contact of contacts">
+              <img [src]="contact.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{contact.name}}</h5>
+                <p class="card-text"></p>
+                <div class="list-btn-option" style="display: flex; justify-content: space-between">
+                  <a href="#" class="btn btn-primary">Chấp nhận</a>
+                  <a href="#" class="btn btn-secondary">Từ chối</a>
+                </div>
               </div>
             </div>
+
           </div>
 
         </div>
+      </ng-container>
+      <ng-container *ngIf="contact === 2">
+        <div class="friend-invite-count">Bạn bè ({{contacts.length}})</div>
+        <div class="container-contact">
+          <form class="search-contact">
+            <input type="text" placeholder="Tìm kiếm tên, email, sđt" [(ngModel)]="keySearchFriend" class="search-contact-input">
+            <select class="range-by-name" id="range-by-name-list-friend">
+              <option value="A-Z" name="a-z">Tên A-Z</option>
+              <option value="Z-A" name="z-a">Tên Z-A</option>
+            </select>
+          </form>
+          <div class="list-contact-card">
+            <div class="card" style="width: 14rem; margin: 6px;" *ngFor="let contact of contacts">
+              <img [src]="contact.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{contact.name}}</h5>
+                <p class="card-text"></p>
+                <div class="list-btn-option" style="display: flex; justify-content: space-between">
+                  <a href="#" class="btn btn-primary">Nhắn tin</a>
+                  <a href="#" class="btn btn-secondary">Hủy kết bạn</a>
+                </div>
+              </div>
+            </div>
 
-      </div>
+          </div>
+
+        </div>
+      </ng-container>
+
   </div>
 </div>

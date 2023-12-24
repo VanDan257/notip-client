@@ -13,39 +13,40 @@ export class SignalRService {
   public hubConnection!: signalR.HubConnection;
 
   public startConnection = () => {
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(environment.chatHub, {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets,
-      })
-      .build();
-
-    let http = this.http;
-
-    this.hubConnection
-      .start()
-      .then(() => {
-        console.log('Hub connection started');
-        this.hubConnection
-          .invoke('getConnectionId')
-          .then(function (connectionId) {
-            http
-              .post(
-                AppRoutingApi.PostHubConnection,
-                {},
-                {
-                  params: {
-                    key: connectionId,
-                  },
-                }
-              )
-              .subscribe({
-                complete: () => console.log('connectionId: ', connectionId),
-                error: (error) => console.log('error: ', error),
-                next: (res) => console.log('next: ', res),
-              });
-          });
-      })
-      .catch((err) => console.log('Error while starting connection: ' + err));
-  };
+    //   this.hubConnection = new signalR.HubConnectionBuilder()
+    //     .withUrl(environment.chatHub, {
+    //       skipNegotiation: true,
+    //       transport: signalR.HttpTransportType.WebSockets,
+    //     })
+    //     .build();
+    //
+    //   let http = this.http;
+    //
+    //   this.hubConnection
+    //     .start()
+    //     .then(() => {
+    //       console.log('Hub connection started');
+    //       this.hubConnection
+    //         .invoke('getConnectionId')
+    //         .then(function (connectionId) {
+    //           http
+    //             .post(
+    //               AppRoutingApi.PostHubConnection,
+    //               {},
+    //               {
+    //                 params: {
+    //                   key: connectionId,
+    //                 },
+    //               }
+    //             )
+    //             .subscribe({
+    //               complete: () => console.log('connectionId: ', connectionId),
+    //               error: (error) => console.log('error: ', error),
+    //               next: (res) => console.log('next: ', res),
+    //             });
+    //         });
+    //     })
+    //     .catch((err) => console.log('Error while starting connection: ' + err));
+    // };
+  }
 }

@@ -6,9 +6,10 @@ import { User } from 'src/app/core/models/user';
 import { AuthenticationService } from 'src/app/core/service/authentication.service';
 import { CallService } from 'src/app/core/service/call.service';
 import { ChatBoardService } from 'src/app/core/service/chat-board.service';
-import { SignalRService } from 'src/app/core/service/signalR.service';
-import { DataHelper } from 'src/app/core/utils/data-helper';
+import * as moment from 'moment';
 import {SocketService} from "../../../../../core/service/socket.service";
+import {UserService} from "../../../../../core/service/user.service";
+import {ToastrService} from "ngx-toastr";
 
 declare const $: any;
 
@@ -17,7 +18,7 @@ declare const $: any;
   templateUrl: './message-detail.component.html',
   styleUrls: ['./message-detail.component.css'],
 })
-export class MessageDetailComponent implements OnInit, AfterViewInit {
+export class MessageDetailComponent implements OnInit {
   @Input() group!: any;
   @Input() contact!: User;
 
@@ -25,19 +26,29 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
   messages: Message[] = [];
   textMessage: string = '';
   groupInfo: any = null;
+  contactSearchs: User[] = [];
+  isGroup!: boolean;
 
   constructor(
     private callService: CallService,
     private chatBoardService: ChatBoardService,
     private authService: AuthenticationService,
     private cdr: ChangeDetectorRef,
-    // private signalRService: SignalRService,
-    private socketService: SocketService
+    private userService: UserService,
+    private socketService: SocketService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
     this.getMessage();
+
+    this.socketService.onMessageReceived().subscribe({
+      next: (response) => {
+        let payload: any = response
+        this.messages.push(payload.payload);
+      }
+    })
 
     $('#my-text').emojioneArea({
       events: {
@@ -47,23 +58,15 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       },
     });
 
-    this.setupSocket();
+    let timeoutId: any;
+    $('#search-contact-add-group').on('input', () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        this.searchContact($('#search-contact-add-group').val());
+      }, 300);
+    })
   }
 
-  setupSocket(){
-    this.socketService.setup(this.currentUser.id);
-
-    // Lắng nghe sự kiện "message recieved" từ máy chủ
-    this.socketService.onMessageReceived();
-    // .subscribe((message) => {
-    //   console.log('Received message:', message);
-    //   // Xử lý thông điệp nhận được từ máy chủ ở đây
-    // });
-  }
-
-  ngAfterViewInit() {
-    this.cdr.detectChanges();
-  }
 
   mess() {}
 
@@ -80,6 +83,8 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (response: any) => {
           this.groupInfo = response;
+          console.log(this.groupInfo);
+          this.isGroup = this.groupInfo.chat.typeChatId == 2;
         },
         error: (error) => console.log('error: ', error),
       });
@@ -92,6 +97,7 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
   }
 
   getMessageByGroup() {
+
     this.chatBoardService.getMessageByGroup(this.group?.id).subscribe({
       next: (response: any) => {
         this.messages = response;
@@ -121,16 +127,24 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       .val()}`;
     if (this.textMessage == null || this.textMessage.trim() == '') return;
 
+    console.log('currentUser: ', this.currentUser)
+    const currentDateTime = moment();
     const message = {
       chatId: this.group == null ? '' : this.group.id,
       content: this.textMessage.trim(),
       type: 'text',
+      senderId: this.currentUser.id,
+      senderName: this.currentUser.name,
+      senderPhoto: this.currentUser.photoUrl,
+      createdAt: currentDateTime.format('YYYY-MM-DD HH:mm:ss')
     };
 
     this.chatBoardService.sendMessage(message).subscribe({
       next: (response: any) => {
         this.textMessage = ''
-        this.socketService.sendMessage(message);
+        this.socketService.sendMessage({payload: message, chatName: this.group.chatName});
+        console.log('response: ', response)
+        this.messages.push(response)
       },
       error: (error) => console.log('error: ', error),
     });
@@ -154,7 +168,11 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       formData.append('type', 'attachment');
 
       this.chatBoardService.sendMessage(formData).subscribe({
-        next: (response: any) => (this.textMessage = ''),
+        next: (response: any) => {
+          this.textMessage = ''
+          this.socketService.sendMessage({payload: response, chatName: this.group.chatName});
+          this.messages.push(response)
+        },
         error: (error) => console.log('error: ', error),
       });
     }
@@ -174,10 +192,18 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       formData.append('type', 'media');
 
       this.chatBoardService.sendMessage(formData).subscribe({
-        next: (response: any) => (this.textMessage = ''),
+        next: (response: any) => {
+          this.textMessage = ''
+          this.socketService.sendMessage({payload: response, chatName: this.group.chatName});
+          this.messages.push(response)
+        },
         error: (error) => console.log('error: ', error),
       });
     }
+  }
+
+  renameGroup(){
+
   }
 
   updateGroupAvatar(evt: any) {
@@ -194,39 +220,12 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       formData.append('chatId', this.group.id);
 
       this.chatBoardService.updateGroupAvatar(formData).subscribe({
-        next: (response: any) => (this.textMessage = ''),
+        next: () => {
+          this.getChatBoardInfo();
+        },
         error: (error) => console.log('error: ', error),
       });
     }
-
-    // const target: DataTransfer = <DataTransfer>evt.target;
-    // if (target.files.length === 0) {
-    //   return;
-    // }
-    // const reader: FileReader = new FileReader();
-    // reader.onload = (e: any) => {
-    //   try {
-    //     var bytes = new Uint8Array(e.target.result);
-    //     let img = 'data:image/png;base64,' + DataHelper.toBase64(bytes);
-    //
-    //     this.chatBoardService
-    //       .updateGroupAvatar({
-    //         id: this.groupInfo.id,
-    //         photo: img,
-    //       })
-    //       .subscribe({
-    //         next: (response: any) => {
-    //           const grp = JSON.parse(response['data']);
-    //           this.groupInfo.Avatar = grp.Avatar;
-    //           this.group.Avatar = grp.Avatar;
-    //         },
-    //         error: (error) => console.log('error: ', error),
-    //       });
-    //   } catch (error) {
-    //     alert('Lỗi ảnh');
-    //   }
-    // };
-    // reader.readAsArrayBuffer(target.files[0]);
   }
 
   downloadFile(path: any, fileName: any) {
@@ -247,4 +246,32 @@ export class MessageDetailComponent implements OnInit, AfterViewInit {
       error: (error) => console.log('error: ', error),
     });
   }
+
+  openModalAddContact() {
+    // this.filter.keySearch = '';
+    // this.contactSearchs = [];
+    $('#modalAddContact').modal();
+  }
+
+  searchContact(data: any) {
+    this.userService.searchContact(data).subscribe({
+      next: (response: any) => {
+        this.contactSearchs = response;
+      },
+      error: (error) => console.log('error: ', error),
+    });
+  }
+  //
+  submitAddContact(contact: any) {
+    // console.log(contact.id, this.currentGroup.id)
+    this.userService.addContact({userId: contact.id, chatId: this.groupInfo.chat.id}).subscribe({
+      next: (response: any) => {
+        this.getChatBoardInfo();
+        this.toastr.success('Thêm thành công');
+        $('#modalAddContact').modal('hide');
+      },
+      error: (error) => console.log('error: ', error),
+    });
+  }
+
 }
