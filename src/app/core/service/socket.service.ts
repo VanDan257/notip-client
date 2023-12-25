@@ -31,11 +31,11 @@ export class SocketService {
     return this.socket.fromEvent('message-received');
   }
 
-  Typing() {
+  onTyping() {
     return this.socket.fromEvent('typing');
   }
 
-  StopTyping() {
+  onStopTyping() {
     return this.socket.fromEvent('stop typing');
   }
 

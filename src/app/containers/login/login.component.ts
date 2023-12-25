@@ -99,9 +99,13 @@ export class LoginComponent implements OnInit {
             timeOut: 2000,
           });
           this.callFunLogin();
-          console.log(response);
         },
-        error: (error) => this.toastr.error('Đăng ký thất bại'),
+        error: (error) => {
+          console.log(error.error)
+          this.toastr.error(error.error.message, 'Đăng ký thất bại', {
+            timeOut: 2000,
+          })
+        },
       });
   }
 

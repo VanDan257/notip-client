@@ -31,8 +31,20 @@ export class ContactDetailComponent implements OnInit, OnChanges {
     }
     this.getListFriendInvites();
 
-    $('#range-by-name-list-friend-invitation').on('input', () => {
+    let timeoutId: any;
 
+    $(document).ready(() => {
+      $('.search-contact-input-invite-friend').on('input', () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          this.userService.searchContact($('.search-contact-input-invite-friend').val()).subscribe({
+            next: (response: any) => {
+              this.contacts = response;
+              console.log(this.contacts);
+            }
+          })
+        }, 300);
+      })
     })
   }
 
@@ -49,16 +61,14 @@ export class ContactDetailComponent implements OnInit, OnChanges {
 
   getListFriends(){
     this.friendService.getListFriends().subscribe({
-      next: (response: any) => {this.contacts = response
-        console.log(response)},
+      next: (response: any) => {this.contacts = response},
       error: (e) => console.log(e)
     });
   }
 
   getListFriendInvites(){
     this.friendService.getListFriendInvites().subscribe({
-      next: (response: any) => {this.contacts = response
-        console.log(response)},
+      next: (response: any) => {this.contacts = response},
       error: (e) => console.log(e)
     });
   }

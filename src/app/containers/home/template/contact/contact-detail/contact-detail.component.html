@@ -7,7 +7,7 @@
         <div class="friend-invite-count">Lời mời ({{contacts.length}})</div>
         <div class="container-contact">
           <form class="search-contact">
-            <input type="text" placeholder="Tìm kiếm tên, email, sđt" [(ngModel)]="keySearchInvitationFriend" class="search-contact-input">
+            <input type="text" placeholder="Tìm kiếm liên hệ" [(ngModel)]="keySearchInvitationFriend" class="search-contact-input-invite-friend">
             <select class="range-by-name" id="range-by-name-list-friend-invitation">
               <option value="A-Z" name="a-z">Tên A-Z</option>
               <option value="Z-A" name="z-a">Tên Z-A</option>
@@ -34,7 +34,7 @@
         <div class="friend-invite-count">Bạn bè ({{contacts.length}})</div>
         <div class="container-contact">
           <form class="search-contact">
-            <input type="text" placeholder="Tìm kiếm tên, email, sđt" [(ngModel)]="keySearchFriend" class="search-contact-input">
+            <input type="text" placeholder="Tìm bạn" [(ngModel)]="keySearchFriend" class="search-contact-input-friend">
             <select class="range-by-name" id="range-by-name-list-friend">
               <option value="A-Z" name="a-z">Tên A-Z</option>
               <option value="Z-A" name="z-a">Tên Z-A</option>

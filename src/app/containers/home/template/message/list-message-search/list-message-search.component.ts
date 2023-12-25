@@ -30,7 +30,6 @@ export class ListMessageSearchComponent {
       this.chatBoardService.searchChat(search).subscribe({
         next: (response: any) => {
           this.datas = response;
-          console.log(this.datas);
         },
         error: (error) => console.log('error: ', error),
       })
