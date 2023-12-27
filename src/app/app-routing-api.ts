@@ -9,11 +9,12 @@ export class AppRoutingApi {
   static GetChatHistory = environment.apiUrl + 'chat/get-all-chat';
   static GetChatBoardInfo = environment.apiUrl + 'chat/get-info-chat';
   static SearchChat = environment.apiUrl + 'chat/search-chat';
-  static AddGroup = environment.apiUrl + 'chat/groups';
+  static AddGroup = environment.apiUrl + 'chat/create-chat';
   static SendMessage = environment.apiUrl + 'message/send-message';
   static GetMessageByGroup = environment.apiUrl + 'message/get-messages';
   static UpdateGroupAvatar = environment.apiUrl + 'chat/update-photo-chat';
   static AddContactIntoGroup = environment.apiUrl + 'chat/groupAdd';
+  static AccessChat = environment.apiUrl + 'chat/access-chat';
 
   static GetCallHistory = environment.apiUrl + 'calls/get-history';
   static GetCallHistoryById = environment.apiUrl + 'calls/get-history';

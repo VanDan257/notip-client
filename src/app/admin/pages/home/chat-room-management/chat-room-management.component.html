@@ -1,0 +1,33 @@
+<div class="container  my-3">
+    <div class="float-end mx-3">
+        <input type="text" placeholder="Tìm kiếm phòng chat" style="border: 1px solid var(--gray); outline: none; padding: 4px 6px; border-radius: 4px; overflow: hidden">
+    </div>
+    <table class="table table-bordered table-striped w-100">
+        <thead>
+        <tr>
+            <th>Ảnh phòng chat</th>
+            <th>Tên phòng chat</th>
+            <th>Loại phòng chat</th>
+            <th>Số lượng tin đã nhắn</th>
+            <th>Ngày tạo</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="chats.length > 0">
+        <tr *ngFor="let chat of chats" style="">
+            <td><img src="{{ chat.photo | pipeHostFile }}" alt="" /></td>
+            <td>{{chat.chatName}}</td>
+            <td>
+                <ng-container *ngIf="chat.typeChatId == 1">
+                    Riêng tư
+                </ng-container>
+                <ng-container *ngIf="chat.typeChatId == 2">
+                    Chat nhóm
+                </ng-container>
+            </td>
+            <td></td>
+            <td>{{chat.createdAt | chatDate}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

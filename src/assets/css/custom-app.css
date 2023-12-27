@@ -293,6 +293,7 @@ label {
   height: calc(100vh - 76px - 63px);
   background-color: #525252;
   background-size: 100% 100%;
+  /*background-image: url("/assets/images/bg-chat1.jpg");*/
   overflow: auto;
   padding-top: 20px;
 }

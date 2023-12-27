@@ -17,6 +17,16 @@
             <div class="box-group-title-name">
               <span>
                 {{ item.chatName }}
+<!--                <ng-container-->
+<!--                  *ngIf="item.chatName.length > 22; else elseTemplate"-->
+<!--                >-->
+<!--                  <span> {{ item.chatName.substring(0, 22) }}... </span>-->
+<!--                </ng-container>-->
+<!--                <ng-template #elseTemplate>-->
+<!--                  <span>-->
+<!--                    {{ item.chatName }}-->
+<!--                  </span>-->
+<!--                </ng-template>-->
               </span>
             </div>
             <div class="box-group-title-time">

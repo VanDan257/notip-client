@@ -13,6 +13,10 @@ export class ChatBoardService {
     return this.http.get(AppRoutingApi.GetChatHistory);
   }
 
+  accessChat(userId: number){
+    return this.http.post(AppRoutingApi.AccessChat, {userId: userId});
+  }
+
   getChatBoardInfo(groupCode: string) {
     return this.http.get(AppRoutingApi.GetChatBoardInfo + '/' + groupCode);
   }
