@@ -34,7 +34,7 @@ export class ListMessageComponent implements OnInit {
     let room = this.datas.find((x) => x.id == chatId);
     if(room!= null) {
       this.socketService.joinRoom(room.chatName);
+      this.onClick.emit(this.datas.find((x) => x.id == chatId));
     }
-    this.onClick.emit(this.datas.find((x) => x.id == chatId));
   }
 }

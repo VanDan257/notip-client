@@ -14,7 +14,6 @@ export class UserService {
   }
 
   updateProfile(userProfile: User) {
-    console.log(userProfile);
     return this.http.post(AppRoutingApi.UpdateProfile, userProfile);
   }
 

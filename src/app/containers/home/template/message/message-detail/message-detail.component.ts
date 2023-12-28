@@ -1,6 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { saveAs } from 'file-saver';
-
 import { Message } from 'src/app/core/models/message';
 import { User } from 'src/app/core/models/user';
 import { AuthenticationService } from 'src/app/core/service/authentication.service';
@@ -78,16 +77,15 @@ export class MessageDetailComponent implements OnInit {
   }
 
   getChatBoardInfo() {
-    this.chatBoardService
-      .getChatBoardInfo(this.group == null ? '' : this.group.id)
-      .subscribe({
-        next: (response: any) => {
-          this.groupInfo = response;
-          console.log(this.groupInfo);
-          this.isGroup = this.groupInfo.chat.typeChatId == 2;
-        },
-        error: (error) => console.log('error: ', error),
-      });
+    if(this.group != null || this.group != undefined){
+      this.chatBoardService.getChatBoardInfo(this.group.id).subscribe({
+          next: (response: any) => {
+            this.groupInfo = response;
+            this.isGroup = this.groupInfo.chat.typeChatId == 2;
+          },
+          error: (error) => console.log('error: ', error),
+        });
+    }
   }
 
   getMessage() {
@@ -127,7 +125,6 @@ export class MessageDetailComponent implements OnInit {
       .val()}`;
     if (this.textMessage == null || this.textMessage.trim() == '') return;
 
-    console.log('currentUser: ', this.currentUser)
     const currentDateTime = moment();
     const message = {
       chatId: this.group == null ? '' : this.group.id,

@@ -8,7 +8,6 @@
       >
         <div (click)="clickTab(index)">
           <i [class]="'mdi ' + item.iconClass"></i>
-          <!--        <span>{{ item.title }}</span>-->
         </div>
       </div>
 
@@ -22,12 +21,7 @@
       <div *ngIf="currentUser != null" class="body-vchat-left-header">
         <div (click)="openModalProfile()" class="box-avatar">
           <img
-            src="{{
-            (currentUser.photoUrl != null
-              ? currentUser.photoUrl
-              : 'avatar-user/userimage.png'
-            ) | pipeHostFile
-          }}"
+            src="{{(currentUser.photoUrl != null ? currentUser.photoUrl : 'avatar-user/userimage.png') | pipeHostFile }}"
           />
         </div>
         <div class="box-fullname">
@@ -68,12 +62,6 @@
             (onClick)="onClickMessage($event)"
           ></app-list-message-search>
         </div>
-<!--        <div [hidden]="tabIndexSelected != 1">-->
-<!--          <app-list-call-->
-<!--            #listCall-->
-<!--            (onClick)="onClickCall($event)"-->
-<!--          ></app-list-call>-->
-<!--        </div>-->
         <div [hidden]="tabIndexSelected != 2">
           <app-list-contact
             #listContact
@@ -87,6 +75,9 @@
     </div>
     <div [ngSwitch]="tabIndexSelected" class="body-vchat-right">
       <div *ngSwitchCase="0">
+        <app-message-detail [group]="filter.group"></app-message-detail>
+      </div>
+      <div *ngSwitchCase="4">
         <app-message-detail [group]="filter.group"></app-message-detail>
       </div>
 <!--      <div *ngSwitchCase="1">-->
@@ -114,11 +105,11 @@
       <div class="modal-header">
         <button
           type="button"
-          class="close"
+          class="btn btn-close"
+          style="font-size: 0.7rem"
           data-dismiss="modal"
           aria-label="Close"
         >
-          <span aria-hidden="true">&times;</span>
         </button>
         <h5 class="modal-title">Tạo nhóm</h5>
       </div>
@@ -130,31 +121,36 @@
                 [(ngModel)]="filter.groupName"
                 type="text"
                 class="form-control"
-                placeholder="Tên nhóm"
+                placeholder="Nhập tên nhóm"
               />
             </div>
-            <div>
-              <div class="mb-2">
-                <small><u>Thành viên</u></small>
-              </div>
-              <ng-container *ngFor="let member of memberInNewGroup">
-                <div class="box-member-in-group">
-                  <!-- <div *ngIf="member.fieldStamp1" class="box-member-in-group"> -->
-                  <img [src]="member.avatar | pipeHostFile" />
-                  <span
-                    (click)="removeMemberToGroup(member)"
-                    class="remove-member"
-                    >X</span
-                  >
-                </div>
-              </ng-container>
-            </div>
-            <div style="clear: both; margin-top: 14px; overflow: hidden">
+            <div style="clear: both; overflow: hidden">
               <hr />
             </div>
+            <div>
+              <div class="position-relative">
+                <span class="position-absolute icon-search-user-add-group"><i class="fa fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" class="input-member form-control" placeholder="Nhập tên, email, số điện thoại thành viên" >
+              </div>
+
+              <div class="d-flex" style="flex-wrap: wrap" *ngIf="userSelctedInNewGroup != null">
+                <ng-container *ngFor="let member of userSelctedInNewGroup">
+                  <div class="box-member-in-group">
+                    <!-- <div *ngIf="member.fieldStamp1" class="box-member-in-group"> -->
+                    <div style="font-size: 0.8rem">{{member.name}}</div>
+                    <span
+                      (click)="removeMemberToGroup(member)"
+                      class="remove-member btn btn-close"
+                    ></span
+                    >
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
             <div class="list-contact-adding">
               <ul class="list-unstyled">
-                <li *ngFor="let member of memberInNewGroup">
+                <li *ngFor="let member of userSearchInNewGroup">
                   <!-- <div *ngIf="member.fieldStamp1" class="box-member-in-group"> -->
                   <div class="contacts">
                     <div class="contacts-avatar">

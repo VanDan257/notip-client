@@ -1,8 +1,12 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { CallService } from 'src/app/core/service/call.service';
 import {UserService} from "../../../../../core/service/user.service";
 import {User} from "../../../../../core/models/user";
 import {FriendService} from "../../../../../core/service/friend.service";
+import {ChatBoardService} from "../../../../../core/service/chat-board.service";
+import {ToastrService} from "ngx-toastr";
+import {SocketService} from "../../../../../core/service/socket.service";
+import {Group} from "../../../../../core/models/group";
 
 declare const $: any;
 @Component({
@@ -11,17 +15,21 @@ declare const $: any;
   styleUrls: ['./contact-detail.component.css']
 })
 export class ContactDetailComponent implements OnInit, OnChanges {
+  @Output() onClick = new EventEmitter<Group>();
   @Input() contact!: any;
+
   contacts: User[] = [];
   keySearchFriend!: string;
   keySearchInvitationFriend!: string;
   title: string = "Lời mời kết bạn";
+  chatId!: string;
 
   toggleTabChat: boolean = false;
 
   constructor(
-    private callService: CallService,
-    private userService: UserService,
+    private chatBoardService: ChatBoardService,
+    private toastr: ToastrService,
+    private socketService: SocketService,
     private friendService: FriendService
   ) { }
 
@@ -31,20 +39,8 @@ export class ContactDetailComponent implements OnInit, OnChanges {
     }
     this.getListFriendInvites();
 
-    let timeoutId: any;
+    $('#range-by-name-list-friend-invitation').on('input', () => {
 
-    $(document).ready(() => {
-      $('.search-contact-input-invite-friend').on('input', () => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          this.userService.searchContact($('.search-contact-input-invite-friend').val()).subscribe({
-            next: (response: any) => {
-              this.contacts = response;
-              console.log(this.contacts);
-            }
-          })
-        }, 300);
-      })
     })
   }
 
@@ -61,19 +57,36 @@ export class ContactDetailComponent implements OnInit, OnChanges {
 
   getListFriends(){
     this.friendService.getListFriends().subscribe({
-      next: (response: any) => {this.contacts = response},
+      next: (response: any) => {
+        this.contacts = response
+      },
       error: (e) => console.log(e)
     });
   }
 
   getListFriendInvites(){
     this.friendService.getListFriendInvites().subscribe({
-      next: (response: any) => {this.contacts = response},
+      next: (response: any) => {
+        this.contacts = response
+      },
       error: (e) => console.log(e)
     });
   }
 
   chat() {
     this.toggleTabChat = true;
+  }
+
+  accessChatRoom(user: any) {
+    let chatCurrent: any;
+    console.log('user: ', user)
+    this.chatBoardService.accessChat(user.id).subscribe({
+      next: (response: any) => {
+        chatCurrent = response;
+        console.log(chatCurrent);
+      }, error: (err) => {
+        this.toastr.error(err);
+      }
+    })
   }
 }

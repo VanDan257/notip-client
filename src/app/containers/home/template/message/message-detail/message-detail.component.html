@@ -10,18 +10,9 @@
             <img src="{{ groupInfo.chat.photo | pipeHostFile }}" alt="" />
             <span>{{ groupInfo.chat.chatName }}</span>
           </ng-container>
-          <!-- <ng-container *ngIf="contact != null">
-                        <img [src]="contact.photo | pipeHostFile" alt="">
-                        <span>{{contact.FullName}}</span>
-                    </ng-container> -->
         </div>
         <div class="box-add-user-group">
-                  <span
-                    (click)="openModalAddContact()"
-                    *ngIf="isGroup"
-                    class="icon-control"
-                    title="Thêm liên hệ"
-                  >
+          <span (click)="openModalAddContact()" *ngIf="isGroup" class="icon-control" title="Thêm liên hệ">
           <i class="mdi mdi-account-plus"></i>
         </span>
           <span
@@ -31,11 +22,7 @@
           >
             <i class="mdi mdi-video-outline"></i>
           </span>
-          <span
-            (click)="toggleContact()"
-            class="icon-control contact-control"
-            title="Thông tin hội thoại"
-          >
+          <span (click)="toggleContact()" class="icon-control contact-control" title="Thông tin hội thoại">
             <i class="mdi mdi-dots-vertical"></i>
           </span>
         </div>
@@ -47,7 +34,6 @@
               *ngIf="currentUser.id != item.senderId"
               class="box-message-send"
             >
-              <!-- <div class="box-message-send"> -->
               <div class="box-message-img">
                 <img [src]="item.senderPhoto | pipeHostFile" alt="" />
               </div>
@@ -282,12 +268,10 @@
       <div class="modal-header">
         <button
           type="button"
-          class="close"
+          class="btn btn-close"
           data-dismiss="modal"
           aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+        ></button>
         <h5 class="modal-title">Thêm liên hệ</h5>
       </div>
       <div class="modal-body">

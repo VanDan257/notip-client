@@ -82,35 +82,18 @@
 
 .box-member-in-group {
   position: relative;
-  width: 50px;
-  float: left;
   margin-right: 10px;
   margin-bottom: 10px;
-}
-
-.box-member-in-group img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  padding: 2px;
-  border: 1px solid #dcdcdc;
+  padding: 0 12px 0 4px;
+  background-color: #b9dcff;
 }
 
 .box-member-in-group .remove-member {
   position: absolute;
-  right: 5px;
-  top: 0px;
-  display: block;
-  width: 17px;
-  height: 17px;
-  color: red;
-  font-weight: bold;
+  right: 0;
+  top: 0;
   cursor: pointer;
-  font-size: 10px;
-  background: white;
-  border: 1px solid #f3f3f3;
-  border-radius: 50%;
-  text-align: center;
+  font-size: 0.5rem;
 }
 
 .modal-dialog-full {
@@ -178,3 +161,14 @@
   top: 0;
   bottom: 0;
 }
+
+.input-member{
+  border-radius: 17px;
+  padding: 6px 6px 6px 36px;
+}
+
+.icon-search-user-add-group{
+  top: 6px;
+  left: 12px;
+}
+

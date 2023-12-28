@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Group} from "../../../../../core/models/group";
 import {ChatBoardService} from "../../../../../core/service/chat-board.service";
+import {ToastrService} from "ngx-toastr";
+import {SocketService} from "../../../../../core/service/socket.service";
 
 @Component({
   selector: 'app-list-message-search',
@@ -12,17 +14,38 @@ export class ListMessageSearchComponent {
   @Output() keySearch = new EventEmitter<Group>();
 
   datas: Group[] = [];
-  chatId!: string;
+  chatId: string = 'chatRoom';
 
-  constructor(private chatBoardService: ChatBoardService) {}
+  constructor(
+    private chatBoardService: ChatBoardService,
+    private toastr: ToastrService,
+    private socketService: SocketService
+  ) {}
 
   ngOnInit() {
     // this.searchGroup();
   }
 
-  openMessage(chatId: any) {
-    this.chatId = chatId;
-    this.onClick.emit(this.datas.find((x) => x.id == chatId));
+  accessChatRoom(chat: any) {
+    if(chat.id != null || chat.id != undefined){
+      this.socketService.joinRoom(chat.chatName);
+      this.onClick.emit(chat);
+      this.chatId = chat.id;
+    }
+    else{
+      let chatUser: any;
+      this.chatBoardService.accessChat(chat.userId).subscribe({
+        next: (response: any) => {
+          chatUser = response;
+          console.log(chatUser);
+          this.socketService.joinRoom(chatUser.chatName);
+          this.onClick.emit(chatUser);
+          this.chatId = chatUser.id;
+        }, error: (err) => {
+          this.toastr.error(err);
+        }
+      })
+    }
   }
 
   searchGroup(search: string) {
