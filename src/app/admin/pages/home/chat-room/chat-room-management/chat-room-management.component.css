@@ -1,0 +1,17 @@
+.ngx-datatable .datatable-body-row {
+  line-height: 2; /* Độ cao giữa các dòng */
+}
+/* Định dạng border cho bảng */
+.ngx-datatable {
+  border: 1px solid #ccc; /* border cho toàn bộ bảng */
+}
+
+/* Định dạng border cho các cột */
+.ngx-datatable .datatable-header-cell-template-wrap {
+  border-bottom: 1px solid #ccc; /* border dưới của các cột */
+}
+
+/* Định dạng border cho các dòng */
+.ngx-datatable .datatable-body-cell {
+  border-bottom: 1px solid #ccc; /* border dưới của các dòng */
+}

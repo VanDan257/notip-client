@@ -5,6 +5,6 @@ export class AdminRoutingApi {
   static CreateAccountAdmin = environment.apiUrl + 'admin/user/create-account-admin';
 
   static GetAllChatAdmin = environment.apiUrl + 'admin/chat/get-all-chat';
-  static GetDetailChatAdmin = environment.apiUrl + 'admin/chat/get-detail-chat';
+  static GetDetailChatAdmin = environment.apiUrl + 'admin/chat/get-info-chat';
   static GetAllMessagesAdmin = environment.apiUrl + 'admin/chat/get-all-message';
 }

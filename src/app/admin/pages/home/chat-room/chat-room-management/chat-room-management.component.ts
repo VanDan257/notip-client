@@ -8,6 +8,8 @@ import {ChatroomService} from "../../../../services/chatroom.service";
 })
 export class ChatRoomManagementComponent implements OnInit{
   chats: any[]=[];
+  // currentPage = 1;
+  // pageSize = Math.ceil(this.chats.length/this.currentPage);
 
   constructor(private chatService: ChatroomService) {}
 
@@ -19,9 +21,13 @@ export class ChatRoomManagementComponent implements OnInit{
     this.chatService.getAllChatAdmin().subscribe({
         next: (response: any) => {
           this.chats = response;
-          console.log(this.chats);
         }
     })
   }
+
+  // onPageChange(event: any) {
+  //   this.currentPage = event.offset;
+  //   this.getAllChatRoom(); // Hàm để tải dữ liệu mới
+  // }
 
 }

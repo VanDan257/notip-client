@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('myChart') myChart!: ElementRef;
 
   //config chart;
-  view: [number, number] = [250, 400];
+  view: [number, number] = [660, 300];
 
   showXAxis = true;
   showYAxis = true;
@@ -59,19 +59,25 @@ export class DashboardComponent implements OnInit {
     this.chatRoomService.getAllMessagesAdmin().subscribe({
       next: (response: any) => {
         this.messages = response;
-        this.messageCharts = this.messages.reduce((acc, item) => {
+        let data = this.messages.reduce((acc, item) => {
           const date = new Date(item.createdAt);
           const monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`; // Tạo chuỗi tháng-năm
 
           if (!acc[monthYear]) {
-            acc[monthYear] = { name: monthYear, value: 0 }; // Khởi tạo đối tượng mới nếu chưa tồn tại
+            acc[monthYear] = { name: monthYear, value: 0,  realDate: item.createdAt}; // Khởi tạo đối tượng mới nếu chưa tồn tại
           }
 
           acc[monthYear].value++; // Tăng số lượng bản ghi
 
           return acc;
         }, {});
-        console.log(this.messageCharts)
+
+        this.messageCharts = Object.values(data);
+        this.messageCharts.sort((a, b) => {
+          if (a.realDate < b.realDate) return -1;
+          if (a.realDate > b.realDate) return 1;
+          return 0;
+        });
       },
       error: err =>{
         this.toastr.error('', err, {
