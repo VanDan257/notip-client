@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   constructor(private chatRoomService: ChatroomService, private userService: UserService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getAllChatRoom();
+    this.getAllChatRoomAdmin();
     this.getAllClient();
     this.getAllMessagesAdmin();
   }
@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  getAllChatRoom(){
+  getAllChatRoomAdmin(){
     this.chatRoomService.getAllChatAdmin().subscribe({
       next: (response: any) => {
         this.chats = response;

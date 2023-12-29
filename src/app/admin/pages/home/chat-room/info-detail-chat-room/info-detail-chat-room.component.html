@@ -1,1 +1,71 @@
-<p>info-detail-chat-room works!</p>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title"><h4>Thông tin chi tiết phòng chat: {{infoChat.chat.chatName}}</h4>  </h3>
+    </div>
+    <div class="danh-sach-thanh-vien">
+      <div class="page-header">
+        <h3 class="page-title"> Danh sách thành viên </h3>
+      </div>
+      <table class="table table-bordered table-striped w-100">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Họ và tên</th>
+          <th>Số điện thoại</th>
+          <th>Email</th>
+          <th>Giới tính</th>
+          <th>Lần đăng nhập cuối</th>
+          <th>Trạng thái tài khoản</th>
+          <th>Ngày đăng kí</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="infoChat.users.length > 0">
+        <tr *ngFor="let user of infoChat.users">
+          <td><img src="{{ user.avatar | pipeHostFile }}" alt="" /></td>
+          <td>{{user.name}}</td>
+          <td>{{user.phone}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.gender}}</td>
+          <td>{{user.lastLogin}}</td>
+          <td>
+            <ng-container *ngIf="user.status === true">
+              <label class="badge badge-success">Hoạt động</label>
+            </ng-container>
+            <ng-container *ngIf="user.status === false">
+              <label class="badge badge-warning">Đã khóa</label>
+            </ng-container>
+          </td>
+          <td>{{user.createdAt | date:'short'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="danh-sach-tin-nhan">
+      <div class="page-header">
+        <h3 class="page-title"> Danh sách tin nhắn </h3>
+      </div>
+      <table class="table table-bordered table-striped w-100">
+        <tr>
+          <th>Nội dung</th>
+          <th>Kiểu tin nhắn</th>
+          <th>File đính kèm</th>
+          <th>Người gửi</th>
+          <th>Thời gian nhắn</th>
+        </tr>
+        <thead>
+        </thead>
+        <tbody *ngIf="infoChat.messages.length > 0">
+        <tr *ngFor="let message of infoChat.messages">
+          <td>{{message.content}}</td>
+          <td>{{message.type}}</td>
+          <td>{{message.path}}</td>
+          <td>{{message.senderName}}</td>
+          <td>{{message.createdAt | date:'short'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

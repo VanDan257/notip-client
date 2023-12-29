@@ -11,6 +11,8 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 })
 export class InfoDetailChatRoomComponent implements OnInit{
   idChatRoom!: string;
+  infoChat!: any;
+
   constructor(private router: Router, private chatRoomService: ChatroomService, private toastr: ToastrService) {}
 
   ngOnInit() {
@@ -22,7 +24,8 @@ export class InfoDetailChatRoomComponent implements OnInit{
   getInfoChatRoom(){
     this.chatRoomService.getDetailChatAdmin(parseInt(this.idChatRoom)).subscribe({
       next: (response: any) => {
-        console.log(response);
+        this.infoChat = response;
+        console.log(this.infoChat);
       },
       error: err => this.toastr.error('', err, {
         timeOut: 2000
