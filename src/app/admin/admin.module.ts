@@ -7,6 +7,7 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { LoginAdminComponent } from './pages/login-admin/login-admin.component';
 import { HomeComponent } from './pages/home/home.component'
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,6 @@ import { HomeComponent } from './pages/home/home.component'
     LoginAdminComponent,
     HomeComponent
   ],
-  imports: [CommonModule, AdminRoutingModule],
+    imports: [CommonModule, AdminRoutingModule, ReactiveFormsModule],
 })
 export class AdminModule {}

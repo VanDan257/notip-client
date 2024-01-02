@@ -37,7 +37,6 @@ export class ListMessageSearchComponent {
       this.chatBoardService.accessChat(chat.userId).subscribe({
         next: (response: any) => {
           chatUser = response;
-          console.log(chatUser);
           this.socketService.joinRoom(chatUser.chatName);
           this.onClick.emit(chatUser);
           this.chatId = chatUser.id;

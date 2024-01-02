@@ -21,4 +21,8 @@ export class ChatroomService {
     return this.http.get(AdminRoutingApi.GetAllMessagesAdmin);
   }
 
+  removeMemberInGroup(userId: any){
+    return this.http.post(AdminRoutingApi.RemoveUserInGroup, userId)
+  }
+
 }

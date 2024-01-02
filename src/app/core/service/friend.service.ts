@@ -17,16 +17,24 @@ export class FriendService {
     return this.http.get(AppRoutingApi.GetListFriendInvites);
   }
 
-  acceptInvite(recipientId: any){
-    this.http.patch(AppRoutingApi.AcceptInviteFriend, recipientId);
+  searchUserFromInvitedFriendPage(keySearch: string){
+    return this.http.get(AppRoutingApi.SearchUserFromInvitedFriendPage + '/' + keySearch);
+  }
+
+  sendInvite(recipientId: any){
+    return this.http.post(AppRoutingApi.SendInviteFriend, {recipientId: recipientId});
+  }
+
+  acceptInvite(senderId: number){
+    return this.http.patch(AppRoutingApi.AcceptInviteFriend, {senderId: senderId});
   }
 
   blockUser(recipientId: any){
-    this.http.patch(AppRoutingApi.BlockUser, recipientId)
+    return this.http.patch(AppRoutingApi.BlockUser, recipientId)
   }
 
   removeBlockUser(recipientId: any){
-    this.http.patch(AppRoutingApi.BlockUser, recipientId)
+    return this.http.patch(AppRoutingApi.BlockUser, recipientId)
   }
 
 }

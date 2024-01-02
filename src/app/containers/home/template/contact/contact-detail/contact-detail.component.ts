@@ -7,6 +7,7 @@ import {ChatBoardService} from "../../../../../core/service/chat-board.service";
 import {ToastrService} from "ngx-toastr";
 import {SocketService} from "../../../../../core/service/socket.service";
 import {Group} from "../../../../../core/models/group";
+import {AuthenticationService} from "../../../../../core/service/authentication.service";
 
 declare const $: any;
 @Component({
@@ -18,18 +19,18 @@ export class ContactDetailComponent implements OnInit, OnChanges {
   @Output() onClick = new EventEmitter<Group>();
   @Input() contact!: any;
 
-  contacts: User[] = [];
+  contacts: any[] = [];
   keySearchFriend!: string;
   keySearchInvitationFriend!: string;
   title: string = "Lời mời kết bạn";
   chatId!: string;
-
   toggleTabChat: boolean = false;
+  currentUser!: User;
 
   constructor(
     private chatBoardService: ChatBoardService,
     private toastr: ToastrService,
-    private socketService: SocketService,
+    private authService: AuthenticationService,
     private friendService: FriendService
   ) { }
 
@@ -38,10 +39,7 @@ export class ContactDetailComponent implements OnInit, OnChanges {
       this.contact = 1;
     }
     this.getListFriendInvites();
-
-    $('#range-by-name-list-friend-invitation').on('input', () => {
-
-    })
+    this.currentUser = this.authService.currentUserValue;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,6 +62,38 @@ export class ContactDetailComponent implements OnInit, OnChanges {
     });
   }
 
+  sendInviteFriend(recipientId: any) {
+    this.friendService.sendInvite(recipientId).subscribe({
+      next: _ => {
+        this.searchUserFromInvitedFriendPage();
+        this.toastr.success('', 'Gửi lời mời kết bạn thành công!', {
+          timeOut: 2000
+        })
+      },
+      error: err => {
+        this.toastr.error('', 'Gửi lời mời kết bạn không thành công!', {
+          timeOut: 2000
+        })
+      }
+    })
+  }
+
+  acceptInviteFriend(senderId: any){
+    this.friendService.acceptInvite(senderId).subscribe({
+      next: _ => {
+        this.searchUserFromInvitedFriendPage();
+        this.toastr.success('', 'Đã thêm vào danh sách bạn bè thành công!', {
+          timeOut: 2000
+        })
+      },
+      error: err => {
+        this.toastr.error('', 'Gửi lời mời kết bạn không thành công!', {
+          timeOut: 2000
+        })
+      }
+    })
+  }
+
   getListFriendInvites(){
     this.friendService.getListFriendInvites().subscribe({
       next: (response: any) => {
@@ -73,13 +103,22 @@ export class ContactDetailComponent implements OnInit, OnChanges {
     });
   }
 
+  searchUserFromInvitedFriendPage(){
+    console.log(this.keySearchInvitationFriend)
+    this.friendService.searchUserFromInvitedFriendPage(this.keySearchInvitationFriend).subscribe({
+      next: (response: any) => {
+        console.log(response)
+        this.contacts = response;
+      }
+    })
+  }
+
   chat() {
     this.toggleTabChat = true;
   }
 
   accessChatRoom(user: any) {
     let chatCurrent: any;
-    console.log('user: ', user)
     this.chatBoardService.accessChat(user.id).subscribe({
       next: (response: any) => {
         chatCurrent = response;

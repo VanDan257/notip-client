@@ -15,8 +15,8 @@ export class SocketService {
   constructor(private socket: Socket) {
     this.socket.connect();
   }
-  setup(userData: any) {
-    this.socket.emit('setup', userData);
+  setup(name: string) {
+    this.socket.emit('setup', name);
   }
 
   joinRoom(room: string) {

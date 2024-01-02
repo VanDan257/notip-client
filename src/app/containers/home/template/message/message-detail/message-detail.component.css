@@ -33,3 +33,19 @@
   border: none;
   outline: none;
 }
+
+
+.btn-out-group-chat{
+  position: absolute;
+  right: 15px;
+  top: 14px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #eb3f3f;
+  transition: 0.3s;
+}
+
+.btn-out-group-chat:hover{
+  color: #ff2828;
+}

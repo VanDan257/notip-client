@@ -25,19 +25,6 @@ export class ListContactComponent implements OnInit {
     this.currentUser = this.authService.currentUserValue;
   }
 
-  // getContact() {
-  //   this.userService.getContact().subscribe({
-  //     next: (response: any) => {
-  //       this.contacts = JSON.parse(response['data']);
-  //
-  //       this.removeItem(this.currentUser.FullName);
-  //       this.uniqByFilter();
-  //       this.itemIndexSelected = -1;
-  //     },
-  //     error: (error) => console.log('error: ', error),
-  //   });
-  // }
-
   openContact(index: number) {
     this.itemIndexSelected = index;
     this.onClick.emit(this.itemIndexSelected);

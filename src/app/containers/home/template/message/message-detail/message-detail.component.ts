@@ -81,6 +81,7 @@ export class MessageDetailComponent implements OnInit {
       this.chatBoardService.getChatBoardInfo(this.group.id).subscribe({
           next: (response: any) => {
             this.groupInfo = response;
+            console.log('groupInfo: ', this.groupInfo)
             this.isGroup = this.groupInfo.chat.typeChatId == 2;
           },
           error: (error) => console.log('error: ', error),
@@ -138,9 +139,9 @@ export class MessageDetailComponent implements OnInit {
 
     this.chatBoardService.sendMessage(message).subscribe({
       next: (response: any) => {
-        this.textMessage = ''
-        this.socketService.sendMessage({payload: message, chatName: this.group.chatName});
-        console.log('response: ', response)
+        this.textMessage = '';
+        console.log(this.groupInfo.chat.chatName)
+        this.socketService.sendMessage({payload: message, chatName: this.groupInfo.chat.chatName});
         this.messages.push(response)
       },
       error: (error) => console.log('error: ', error),
@@ -242,6 +243,25 @@ export class MessageDetailComponent implements OnInit {
       },
       error: (error) => console.log('error: ', error),
     });
+  }
+
+  openModalRemoveGroup(){
+    $('#modalRemoveGroup').modal();
+  }
+
+  removeGroup(){
+    this.chatBoardService.removeGroup(this.currentUser.id, this.group.id).subscribe({
+      next: _ => {
+        this.toastr.success('', 'Rời nhóm thành công!', {
+          timeOut: 2000
+        })
+      },
+      error: err => {
+        this.toastr.success('Rời nhóm không thành công thành công!', 'Đã có lỗi xảy ra', {
+          timeOut: 2000
+        })
+      }
+    })
   }
 
   openModalAddContact() {

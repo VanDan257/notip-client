@@ -34,7 +34,6 @@ export class AuthenticationService {
   login(params: any) {
     return this.http.post(AppRoutingApi.Login, params).pipe(
       map((response: any) => {
-        console.log(response['data']['token']);
         localStorage.setItem(
           Constants.LOCAL_STORAGE_KEY.SESSION,
           JSON.stringify(response['data'])

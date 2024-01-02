@@ -2,23 +2,27 @@
   <div class="content-wrapper">
     <div class="page-header">
       <h3 class="page-title"> Danh sách phòng chat </h3>
+      <nav aria-label="breadcrumb">
+        <button class="btn btn-info btn-rounded">Tạo phòng chát</button>
+      </nav>
     </div>
-    <table class="table table-bordered table-striped w-100">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Tên phòng chat</th>
-            <th>Loại phòng chat</th>
-            <th>Số lượng tin đã nhắn</th>
-            <th>Số lượng thành viên</th>
-            <th>Thời gian tạo</th>
-            <th>Thời gian hoạt động cuối</th>
-        </tr>
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th></th>
+                <th>Tên phòng chat</th>
+                <th>Loại phòng chat</th>
+                <th>Số lượng tin đã nhắn</th>
+                <th>Số lượng thành viên</th>
+                <th>Thời gian tạo</th>
+                <th>Thời gian hoạt động cuối</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody *ngIf="chats.length > 0">
         <tr *ngFor="let chat of chats">
-            <td  [routerLink]="['/admin/chi-tiet-phong-chat', chat.id]"><img src="{{ chat.photo | pipeHostFile }}" alt="" /></td>
-          <td><a [routerLink]="['/admin/chi-tiet-phong-chat', chat.id]" class="link-primary">{{chat.chatName}}</a></td>
+            <td [routerLink]="['/admin/phong-chat/chi-tiet-phong-chat', chat.id]"><img src="{{ chat.photo | pipeHostFile }}" alt="" /></td>
+          <td><a [routerLink]="['/admin/phong-chat/chi-tiet-phong-chat', chat.id]" class="link-primary">{{chat.chatName}}</a></td>
             <td>
                 <ng-container *ngIf="chat.typeChatId == 1">
                     Riêng tư
@@ -31,6 +35,10 @@
             <td>{{chat.numberOfMember}}</td>
             <td>{{chat.createdAt | date:'short'}}</td>
             <td>{{chat.updatedAt | date:'short'}}</td>
+            <td>
+              <button title="Xem chi tiết" class="link-info btn-option"><i class="fa fa-solid fa-eye"></i></button> |
+              <button title="Xóa" class="link-danger btn-option"><i class="fa fa-solid fa-trash"></i></button>
+            </td>
         </tr>
         </tbody>
     </table>

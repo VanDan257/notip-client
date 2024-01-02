@@ -13,7 +13,6 @@ import { AuthenticationService } from 'src/app/core/service/authentication.servi
 import { CallService } from 'src/app/core/service/call.service';
 import { ChatBoardService } from 'src/app/core/service/chat-board.service';
 import { UserService } from 'src/app/core/service/user.service';
-import { SignalRService } from 'src/app/core/service/signalR.service';
 import { Constants } from 'src/app/core/utils/constants';
 import {SocketService} from "../../core/service/socket.service";
 import {ListMessageSearchComponent} from "./template/message/list-message-search/list-message-search.component";
@@ -76,7 +75,6 @@ export class HomeComponent implements OnInit {
     private callService: CallService,
     private chatBoardService: ChatBoardService,
     private userService: UserService,
-    private signalRService: SignalRService,
     private ngZone: NgZone,
     private router: Router,
     private spinner: NgxSpinnerService,
@@ -99,6 +97,8 @@ export class HomeComponent implements OnInit {
         this.listMessage.getData()
       }
     })
+
+    this.socketService.setup(this.currentUser.name);
 
     // search group chat or user to chat
     let timeoutId: any;
@@ -299,7 +299,7 @@ export class HomeComponent implements OnInit {
           this.toastr.success('', 'Tạo nhóm thành công', {
             timeOut: 2000,
           });
-          $('#modalAddContact').modal('hide');
+          $('#modalAddGroup').modal('hide');
           this.listMessage.getData();
         },
         error: (error) =>

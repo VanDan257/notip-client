@@ -11,10 +11,12 @@ import {ToastrService} from "ngx-toastr";
 })
 export class DashboardComponent implements OnInit {
   chats: any[]=[];
-  dataChat: number[] = [];
   clients: any[]=[];
   messages: any[] = [];
   messageCharts: any[] = [];
+  userUse: any[] = [];
+  userTable: any[] = [];
+  numberOfMessages: number | undefined;
 
   @ViewChild('myChart') myChart!: ElementRef;
 
@@ -36,16 +38,35 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.getAllChatRoomAdmin();
-    this.getAllClient();
     this.getAllMessagesAdmin();
+    this.getTopClientsChat();
   }
 
   onSelect(event: any) {
     console.log(event);
   }
 
-  getAllClient(){
+  getTopClientsChat() {
+    this.userService.getAllClients().subscribe({
+      next: (response: any) => {
+        this.clients = response;
 
+        let clientMap = new Map();
+        for (let client of response) {
+          clientMap.set(client.id, { ...client, messagesCounts: 0 });
+        }
+        // Lọc và thêm thuộc tính message vào user nếu có id phù hợp
+        for (let message of this.userUse) {
+          let userId = message.senderId;
+          if (clientMap.has(userId)) {
+            clientMap.get(userId).messagesCounts = message.messageCount;
+          }
+        }
+
+        this.clients = Array.from(clientMap.values()).slice(0, 10);
+        console.log(this.clients)
+      }
+    })
   }
 
   getAllChatRoomAdmin(){
@@ -59,6 +80,8 @@ export class DashboardComponent implements OnInit {
     this.chatRoomService.getAllMessagesAdmin().subscribe({
       next: (response: any) => {
         this.messages = response;
+
+        // Đếm số lượng tin nhắn theo tháng
         let data = this.messages.reduce((acc, item) => {
           const date = new Date(item.createdAt);
           const monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`; // Tạo chuỗi tháng-năm
@@ -78,6 +101,48 @@ export class DashboardComponent implements OnInit {
           if (a.realDate > b.realDate) return 1;
           return 0;
         });
+
+        // Đếm số lượng tin nhắn theo senderId
+        let dataBySender = this.messages.reduce((acc, item) => {
+          const senderId = item.senderId;
+
+          if (!acc[senderId]) {
+            acc[senderId] = { senderId: senderId, messageCount: 0 };
+          }
+
+          acc[senderId].messageCount++;
+
+          return acc;
+        }, {});
+
+        this.userUse = Object.values(dataBySender);
+        this.userUse.sort((a, b) => {
+          if(a.messageCount > b.messageCount) return -1;
+          if(a.messageCount < b.messageCount) return 1;
+          return 0;
+        })
+
+        // Đếm số lượng tin đã nhắn trong 7 ngày qua
+        // Lấy thời điểm hiện tại
+        const currentDate = new Date();
+
+        // Số lượng tin nhắn trong 7 ngày qua
+        const messagesWithinLast7Days = this.messages.filter(item => {
+          // Chuyển thời điểm tạo tin nhắn thành đối tượng Date
+          const messageDate = new Date(item.createdAt);
+
+          // Tính khoảng thời gian giữa thời điểm hiện tại và thời điểm tạo tin nhắn
+          const timeDifference = currentDate.getTime() - messageDate.getTime();
+
+          // Chuyển thời gian từ milliseconds sang ngày
+          const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+          // Kiểm tra xem tin nhắn có được tạo trong vòng 7 ngày qua không
+          return daysDifference <= 7 && daysDifference > 0; // daysDifference > 0 để đảm bảo không lấy tin nhắn tạo trong tương lai
+        });
+
+        // Số lượng tin nhắn trong 7 ngày qua
+        this.numberOfMessages = messagesWithinLast7Days.length;
       },
       error: err =>{
         this.toastr.error('', err, {

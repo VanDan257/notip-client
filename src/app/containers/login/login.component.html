@@ -54,7 +54,7 @@
             <input
               type="text"
               formControlName="username"
-              placeholder="Tên đăng nhập"
+              placeholder="Tên người dùng"
             />
             <div
               *ngIf="
@@ -65,7 +65,7 @@
                 *ngIf="formDataSignup.get('username')?.hasError('required')"
                 class="error"
               >
-                Vui lòng nhập tên đăng nhập
+                Vui lòng nhập tên người dùng
               </span>
             </div>
           </div>
@@ -80,6 +80,12 @@
                 class="error"
               >
                 Vui lòng nhập email
+              </span>
+              <span
+                *ngIf="formDataSignup.get('email')?.hasError('checkEmail')"
+                class="error"
+              >
+                Vui lòng nhập đúng định dạng email
               </span>
             </div>
           </div>

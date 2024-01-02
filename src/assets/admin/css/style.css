@@ -10580,7 +10580,7 @@ html {
   overflow: auto; }
 
 .container-scroller {
-  overflow: hidden; }
+  overflow: scroll; }
 
 pre {
   background: #e8eff4;
@@ -12776,6 +12776,9 @@ dl {
 
 /* Sidebar */
 .sidebar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
   min-height: calc(100vh - 70px);
   height: 100%;
   background: #181824;
@@ -13009,6 +13012,7 @@ dl {
   padding-top: 70px; }
 
 .main-panel {
+  margin-left: 240px;
   -webkit-transition: width 0.25s ease, margin 0.25s ease;
   transition: width 0.25s ease, margin 0.25s ease;
   /*width: calc(100% - 240px);*/

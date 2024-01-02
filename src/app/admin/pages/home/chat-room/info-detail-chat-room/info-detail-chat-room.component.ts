@@ -4,6 +4,8 @@ import {ChatroomService} from "../../../../services/chatroom.service";
 import {ToastrService} from "ngx-toastr";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 
+declare const $: any;
+
 @Component({
   selector: 'app-info-detail-chat-room',
   templateUrl: './info-detail-chat-room.component.html',
@@ -12,6 +14,7 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 export class InfoDetailChatRoomComponent implements OnInit{
   idChatRoom!: string;
   infoChat!: any;
+  memberDelete: any | undefined;
 
   constructor(private router: Router, private chatRoomService: ChatroomService, private toastr: ToastrService) {}
 
@@ -30,6 +33,28 @@ export class InfoDetailChatRoomComponent implements OnInit{
       error: err => this.toastr.error('', err, {
         timeOut: 2000
       })
+    })
+  }
+
+  onDeleteMember(memberDelete: any){
+    this.memberDelete = memberDelete
+    $('#modalDeleteMember').modal();
+  }
+
+  deleteMember(userId: any){
+    this.chatRoomService.removeMemberInGroup(userId).subscribe({
+      next: _ => {
+        this.getInfoChatRoom();
+        this.toastr.success('', 'Xóa người dùng khỏi phòng chat thành công!', {
+          timeOut: 2000
+        })
+        $('modalDeleteMember').modal('hide');
+      },
+      error: err => {
+        this.toastr.error('', 'Xóa người dùng khỏi phòng chat không thành công!', {
+          timeOut: 2000
+        })
+      }
     })
   }
 

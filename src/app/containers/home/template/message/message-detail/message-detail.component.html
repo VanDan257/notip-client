@@ -179,6 +179,7 @@
         <ng-container  *ngIf="isGroup">
           <div class="box-contact-info-header">
             <strong>Thông tin nhóm</strong>
+            <button class="btn btn-out-group-chat" (click)="openModalRemoveGroup()"><i class="fa fa-solid fa-right-from-bracket"></i></button>
           </div>
           <div class="box-contact-info-body">
             <div class="box-group-info">
@@ -266,12 +267,12 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          type="button"
-          class="btn btn-close"
-          data-dismiss="modal"
-          aria-label="Close"
-        ></button>
+<!--        <button-->
+<!--          type="button"-->
+<!--          class="btn btn-close"-->
+<!--          data-dismiss="modal"-->
+<!--          aria-label="Close"-->
+<!--        ></button>-->
         <h5 class="modal-title">Thêm liên hệ</h5>
       </div>
       <div class="modal-body">
@@ -313,3 +314,18 @@
   </div>
 </div>
 
+<div class="modal fade" id="modalRemoveGroup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bạn có chắc muốn rời nhóm?</h5>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-around">
+          <button class="btn btn-warning" (click)="removeGroup()">Xác nhận</button>
+          <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

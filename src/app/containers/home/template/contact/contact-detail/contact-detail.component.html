@@ -7,25 +7,36 @@
         <div class="friend-invite-count">Lời mời ({{contacts.length}})</div>
         <div class="container-contact">
           <form class="search-contact">
-            <input type="text" placeholder="Tìm kiếm liên hệ" [(ngModel)]="keySearchInvitationFriend" class="search-contact-input-invite-friend">
+            <input type="text" placeholder="Tìm kiếm liên hệ" [(ngModel)]="keySearchInvitationFriend" name="keySearchInvitationFriend" (ngModelChange)="searchUserFromInvitedFriendPage()" class="search-contact-input-invite-friend">
             <select class="range-by-name" id="range-by-name-list-friend-invitation">
               <option value="A-Z" name="a-z">Tên A-Z</option>
               <option value="Z-A" name="z-a">Tên Z-A</option>
             </select>
           </form>
           <div class="list-contact-card">
-            <div class="card" style="width: 14rem; margin-bottom: 10px; margin-left: 10px" *ngFor="let contact of contacts">
-              <img [src]="contact.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">{{contact.name}}</h5>
-                <p class="card-text"></p>
-                <div class="list-btn-option" style="display: flex; justify-content: space-between">
-                  <a href="#" class="btn btn-primary">Chấp nhận</a>
-                  <a href="#" class="btn btn-secondary">Từ chối</a>
-                </div>
-              </div>
-            </div>
-
+              <ng-container  *ngFor="let item of contacts">
+                <ng-container>
+                  <div class="card" style="width: 14rem; margin-bottom: 10px; margin-left: 10px">
+                      <img [src]="item.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">{{item.name}}</h5>
+                        <p class="card-text"></p>
+                        <div class="list-btn-option" style="display: flex; justify-content: space-between" *ngIf="item.hasOwnProperty('statusFriend')&&item.statusFriend === 2">
+                          <button class="btn btn-primary" (click)="acceptInviteFriend(item.id)">Chấp nhận</button>
+                          <button class="btn btn-secondary">Từ chối</button>
+                        </div>
+                        <div class="list-btn-option" style="display: flex; justify-content: space-between" *ngIf="item.hasOwnProperty('statusFriend')&&item.statusFriend === 1">
+                          <button class="btn btn-primary">Hủy lời mời</button>
+                          <button class="btn btn-warning">Nhắn tin</button>
+                        </div>
+                        <div class="list-btn-option" style="display: flex; justify-content: space-between" *ngIf="!item.hasOwnProperty('statusFriend')">
+                          <button class="btn btn-primary" (click)="sendInviteFriend(item.id)">Gửi lời mời</button>
+                          <button class="btn btn-warning">Nhắn tin</button>
+                        </div>
+                      </div>
+                  </div>
+                </ng-container>
+              </ng-container>
           </div>
 
         </div>
@@ -34,7 +45,7 @@
         <div class="friend-invite-count">Bạn bè ({{contacts.length}})</div>
         <div class="container-contact">
           <form class="search-contact">
-            <input type="text" placeholder="Tìm bạn" [(ngModel)]="keySearchFriend" class="search-contact-input-friend">
+            <input type="text" placeholder="Tìm bạn" [(ngModel)]="keySearchFriend" name="keySearchFriend" class="search-contact-input-friend">
             <select class="range-by-name" id="range-by-name-list-friend">
               <option value="A-Z" name="a-z">Tên A-Z</option>
               <option value="Z-A" name="z-a">Tên Z-A</option>

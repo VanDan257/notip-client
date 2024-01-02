@@ -15,6 +15,7 @@ export class AppRoutingApi {
   static UpdateGroupAvatar = environment.apiUrl + 'chat/update-photo-chat';
   static AddContactIntoGroup = environment.apiUrl + 'chat/groupAdd';
   static AccessChat = environment.apiUrl + 'chat/access-chat';
+  static RemoveGroup = environment.apiUrl + 'chat/remove-member-in-group';
 
   static GetCallHistory = environment.apiUrl + 'calls/get-history';
   static GetCallHistoryById = environment.apiUrl + 'calls/get-history';
@@ -28,10 +29,10 @@ export class AppRoutingApi {
   static SearchContact = environment.apiUrl + 'user/search';
 
   static SearchFriend = environment.apiUrl + 'friend/search-friend';
+  static SearchUserFromInvitedFriendPage = environment.apiUrl + 'friend/search-friend-in-invited-page';
   static SendInviteFriend = environment.apiUrl + 'friend/send-invite';
   static AcceptInviteFriend = environment.apiUrl + 'friend/accept-invite';
   static BlockUser = environment.apiUrl + 'friend/block-invite';
-  static RemoveBlockFriend = environment.apiUrl + 'friend/accept-invite';
   static GetListFriends = environment.apiUrl + 'friend/get-list-friend';
   static GetListFriendInvites = environment.apiUrl + 'friend/get-list-friend-invite';
 }

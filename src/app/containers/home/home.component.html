@@ -96,21 +96,18 @@
   </div>
 </div>
 
-
-
-
 <div class="modal fade" id="modalAddGroup">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          type="button"
-          class="btn btn-close"
-          style="font-size: 0.7rem"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-        </button>
+<!--        <button-->
+<!--          type="button"-->
+<!--          class="btn btn-close"-->
+<!--          style="font-size: 0.7rem"-->
+<!--          data-dismiss="modal"-->
+<!--          aria-label="Close"-->
+<!--        >-->
+<!--        </button>-->
         <h5 class="modal-title">Tạo nhóm</h5>
       </div>
       <div class="modal-body">
@@ -213,9 +210,7 @@
           <div class="col-md-4 d-flex align-items-center flex-column">
             <img class="profile-img" [src]="currentUser.photoUrl | pipeHostFile" alt="Img">
             <label class="text-center btn btn-success btn-sm margin-top-md" for="edit-user-avatar">
-<!--              <button type="button" class="btn btn-success btn-sm margin-top-md" (click)="chooseFile()" >-->
                 Chọn ảnh
-<!--              </button>-->
               <input type="file" id="edit-user-avatar" style="display: none" (change)="onloadAvatar($event)"
                      accept=".jpg, .png, .jpeg, .gif, .bmp|image/*" />
             </label>

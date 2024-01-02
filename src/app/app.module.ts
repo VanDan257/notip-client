@@ -1,3 +1,4 @@
+// module
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -6,11 +7,22 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-
+import { DateTimePickerModule} from 'ngx-datetime-picker';
+import { PipeModule } from './core/pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment'
-import { AppComponent } from './app.component';
 
+// pipe
+import { PipeHostFilePipe } from './core/pipe/pipe-host-file.pipe';
+import { ChatDatePipe } from './core/pipe/chat-date.pipe';
+
+// other
+import { AuthGuardService } from './auth/auth-guard.service';
+import { JwtInterceptor } from './auth/jwt.interceptor';
+import { ErrorInterceptor } from './auth/error.interceptor';
+
+// component
+import { AppComponent } from './app.component';
 import { HomeComponent } from './containers/home/home.component';
 import { LoginComponent } from './containers/login/login.component';
 import { LogoutComponent } from './containers/logout/logout.component';
@@ -25,17 +37,7 @@ import { NotificationDetailComponent } from './containers/home/template/notifica
 import { ListNotificationComponent } from './containers/home/template/notification/list-notification/list-notification.component';
 import { MessageDetailComponent } from './containers/home/template/message/message-detail/message-detail.component';
 import { ListMessageSearchComponent } from './containers/home/template/message/list-message-search/list-message-search.component';
-
-// pipe
-import { PipeHostFilePipe } from './core/pipe/pipe-host-file.pipe';
-import { ChatDatePipe } from './core/pipe/chat-date.pipe';
-import { PipeModule } from './core/pipe/pipe.module';
-
-import { AuthGuardService } from './auth/auth-guard.service';
-import { JwtInterceptor } from './auth/jwt.interceptor';
-import { ErrorInterceptor } from './auth/error.interceptor';
 import { ButtonUploadComponent } from './containers/button-upload/button-upload.component';
-
 
 const config: SocketIoConfig = { url: environment.chatHub, options: {} };
 
@@ -55,10 +57,8 @@ const config: SocketIoConfig = { url: environment.chatHub, options: {} };
         ListMessageComponent,
         NotificationDetailComponent,
         ListNotificationComponent,
-        // ChatDatePipe,
-        // PipeHostFilePipe,
         ButtonUploadComponent,
-        ListMessageSearchComponent
+        ListMessageSearchComponent,
     ],
     imports: [
         BrowserModule,
@@ -71,7 +71,7 @@ const config: SocketIoConfig = { url: environment.chatHub, options: {} };
         PipeModule,
         ToastrModule.forRoot(),
         SocketIoModule.forRoot(config),
-
+        DateTimePickerModule,
     ],
     providers: [
         AuthGuardService,

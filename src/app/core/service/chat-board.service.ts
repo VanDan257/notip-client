@@ -29,6 +29,11 @@ export class ChatBoardService {
     return this.http.post(AppRoutingApi.AddGroup, group);
   }
 
+  removeGroup(userId: any, chatId: any){
+    console.log({userId, chatId});
+    return this.http.post(AppRoutingApi.RemoveGroup, {userId, chatId})
+  }
+
   sendMessage(message: any) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
