@@ -30,6 +30,17 @@ export class UserService {
     );
   }
 
+
+  get currentAdmin(): any {
+    let session = localStorage.getItem(Constants.LOCAL_STORAGE_KEY.SESSION_ADMIN);
+
+    if (session == null || session == undefined) return null;
+    return JSON.parse(
+      localStorage.getItem(Constants.LOCAL_STORAGE_KEY.SESSION_ADMIN)?.toString() ??
+      ''
+    );
+  }
+
   getAllClients() {
     return this.http.get(AdminRoutingApi.GetAllClients);
   }

@@ -14,8 +14,7 @@
             </select>
           </form>
           <div class="list-contact-card">
-              <ng-container  *ngFor="let item of contacts">
-                <ng-container>
+              <ng-container  *ngFor="let item of contacts | paginate: { itemsPerPage: pageSize, currentPage: p }">
                   <div class="card" style="width: 14rem; margin-bottom: 10px; margin-left: 10px">
                       <img [src]="item.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
                       <div class="card-body">
@@ -35,10 +34,11 @@
                         </div>
                       </div>
                   </div>
-                </ng-container>
               </ng-container>
           </div>
-
+          <div class="float-end">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
         </div>
       </ng-container>
       <ng-container *ngIf="contact === 2">
@@ -52,17 +52,23 @@
             </select>
           </form>
           <div class="list-contact-card">
-            <div class="card" style="width: 14rem; margin: 6px;" *ngFor="let contact of contacts">
-              <img [src]="contact.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
+            <ng-container  *ngFor="let item of contacts | paginate: { itemsPerPage: pageSize, currentPage: p }">
+
+              <div class="card" style="width: 14rem; margin: 6px;">
+              <img [src]="item.avatar | pipeHostFile" class="card-img-top avatar-user" alt="...">
               <div class="card-body">
-                <h5 class="card-title">{{contact.name}}</h5>
+                <h5 class="card-title">{{item.name}}</h5>
                 <p class="card-text"></p>
                 <div class="list-btn-option" style="display: flex; justify-content: space-between">
-                  <a href="#" class="btn btn-primary" (click)="accessChatRoom(contact)">Nhắn tin</a>
+                  <a href="#" class="btn btn-primary" (click)="accessChatRoom(item)">Nhắn tin</a>
                   <a href="#" class="btn btn-secondary">Hủy kết bạn</a>
                 </div>
               </div>
             </div>
+            </ng-container>
+          </div>
+          <div class="float-end">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
           </div>
         </div>
       </ng-container>

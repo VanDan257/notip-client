@@ -41,7 +41,7 @@
         <div class="card">
           <div class="card-body">
             <div class="d-sm-flex align-items-center mb-4">
-              <h4 class="card-title mb-sm-0">Những khách hàng thường xuyên sử dụng</h4>
+              <h4 class="card-title mb-sm-0">Khách hàng thường xuyên sử dụng</h4>
               <a routerLink="../khach-hang/quan-ly-khach-hang" class="text-dark ml-auto mb-3 mb-sm-0">Xem tất cả khách hàng</a>
             </div>
             <div class="table-responsive border rounded p-1">
@@ -68,10 +68,10 @@
                     <td>{{client.lastLogin}}</td>
                     <td>{{client.messageCount}}</td>
                     <td>
-                      <ng-container *ngIf="client.status === true">
+                      <ng-container *ngIf="client.status === 1">
                         <label class="badge badge-success">Hoạt động</label>
                       </ng-container>
-                      <ng-container *ngIf="client.status === false">
+                      <ng-container *ngIf="client.status === 0">
                         <label class="badge badge-warning">Đã khóa</label>
                       </ng-container>
                     </td>
@@ -86,19 +86,19 @@
               </table>
 
             </div>
-            <div class="d-flex mt-4 flex-wrap">
-              <p class="text-muted">Showing 1 to 10 of 57 entries</p>
-              <nav class="ml-auto">
-                <ul class="pagination separated pagination-info">
-                  <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-left"></i></a></li>
-                  <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                  <li class="page-item"><a href="#" class="page-link">2</a></li>
-                  <li class="page-item"><a href="#" class="page-link">3</a></li>
-                  <li class="page-item"><a href="#" class="page-link">4</a></li>
-                  <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-right"></i></a></li>
-                </ul>
-              </nav>
-            </div>
+<!--            <div class="d-flex mt-4 flex-wrap">-->
+<!--              <p class="text-muted">Showing 1 to 10 of 57 entries</p>-->
+<!--              <nav class="ml-auto">-->
+<!--                <ul class="pagination separated pagination-info">-->
+<!--                  <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-left"></i></a></li>-->
+<!--                  <li class="page-item active"><a href="#" class="page-link">1</a></li>-->
+<!--                  <li class="page-item"><a href="#" class="page-link">2</a></li>-->
+<!--                  <li class="page-item"><a href="#" class="page-link">3</a></li>-->
+<!--                  <li class="page-item"><a href="#" class="page-link">4</a></li>-->
+<!--                  <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-right"></i></a></li>-->
+<!--                </ul>-->
+<!--              </nav>-->
+<!--            </div>-->
           </div>
         </div>
       </div>
@@ -106,11 +106,11 @@
   </div>
   <!-- content-wrapper ends -->
   <!-- partial:partials/_footer.html -->
-  <footer class="footer">
-    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-      <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
-    </div>
-  </footer>
+<!--  <footer class="footer">-->
+<!--    <div class="d-sm-flex justify-content-center justify-content-sm-between">-->
+<!--      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>-->
+<!--      <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>-->
+<!--    </div>-->
+<!--  </footer>-->
   <!-- partial -->
 </div>

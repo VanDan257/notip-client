@@ -11,6 +11,7 @@ import { DateTimePickerModule} from 'ngx-datetime-picker';
 import { PipeModule } from './core/pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment'
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // pipe
 import { PipeHostFilePipe } from './core/pipe/pipe-host-file.pipe';
@@ -69,6 +70,7 @@ const config: SocketIoConfig = { url: environment.chatHub, options: {} };
         HttpClientModule,
         NgxSpinnerModule,
         PipeModule,
+        NgxPaginationModule,
         ToastrModule.forRoot(),
         SocketIoModule.forRoot(config),
         DateTimePickerModule,

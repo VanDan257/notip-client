@@ -1,4 +1,5 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-admin',
@@ -6,6 +7,11 @@ import {Component, ViewEncapsulation} from '@angular/core';
   styleUrls: [],
   encapsulation: ViewEncapsulation.None,
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
+  currentAdmin: any;
+  constructor(private userService: UserService) {}
 
+  ngOnInit() {
+    this.currentAdmin = this.userService.currentAdmin;
+  }
 }

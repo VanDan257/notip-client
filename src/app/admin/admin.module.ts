@@ -8,6 +8,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { LoginAdminComponent } from './pages/login-admin/login-admin.component';
 import { HomeComponent } from './pages/home/home.component'
 import {ReactiveFormsModule} from "@angular/forms";
+import {PipeModule} from "../core/pipe/pipe.module";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,6 @@ import {ReactiveFormsModule} from "@angular/forms";
     LoginAdminComponent,
     HomeComponent
   ],
-    imports: [CommonModule, AdminRoutingModule, ReactiveFormsModule],
+    imports: [CommonModule, AdminRoutingModule, ReactiveFormsModule, PipeModule],
 })
 export class AdminModule {}

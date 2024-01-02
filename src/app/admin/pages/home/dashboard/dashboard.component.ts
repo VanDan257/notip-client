@@ -53,17 +53,22 @@ export class DashboardComponent implements OnInit {
 
         let clientMap = new Map();
         for (let client of response) {
-          clientMap.set(client.id, { ...client, messagesCounts: 0 });
+          clientMap.set(client.id, { ...client, messageCount: 0 });
         }
         // Lọc và thêm thuộc tính message vào user nếu có id phù hợp
         for (let message of this.userUse) {
           let userId = message.senderId;
           if (clientMap.has(userId)) {
-            clientMap.get(userId).messagesCounts = message.messageCount;
+            clientMap.get(userId).messageCount = message.messageCount;
           }
         }
 
         this.clients = Array.from(clientMap.values()).slice(0, 10);
+        this.clients.sort((a, b) => {
+          if(a.messageCount > b.messageCount) return -1;
+          if(a.messageCount < b.messageCount) return 1;
+          return 0;
+        })
         console.log(this.clients)
       }
     })
@@ -116,16 +121,10 @@ export class DashboardComponent implements OnInit {
         }, {});
 
         this.userUse = Object.values(dataBySender);
-        this.userUse.sort((a, b) => {
-          if(a.messageCount > b.messageCount) return -1;
-          if(a.messageCount < b.messageCount) return 1;
-          return 0;
-        })
 
         // Đếm số lượng tin đã nhắn trong 7 ngày qua
         // Lấy thời điểm hiện tại
         const currentDate = new Date();
-
         // Số lượng tin nhắn trong 7 ngày qua
         const messagesWithinLast7Days = this.messages.filter(item => {
           // Chuyển thời điểm tạo tin nhắn thành đối tượng Date
@@ -138,7 +137,7 @@ export class DashboardComponent implements OnInit {
           const daysDifference = timeDifference / (1000 * 3600 * 24);
 
           // Kiểm tra xem tin nhắn có được tạo trong vòng 7 ngày qua không
-          return daysDifference <= 7 && daysDifference > 0; // daysDifference > 0 để đảm bảo không lấy tin nhắn tạo trong tương lai
+          return daysDifference <= 7 && daysDifference > 0;
         });
 
         // Số lượng tin nhắn trong 7 ngày qua

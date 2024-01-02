@@ -19,6 +19,9 @@ export class ContactDetailComponent implements OnInit, OnChanges {
   @Output() onClick = new EventEmitter<Group>();
   @Input() contact!: any;
 
+  pageSize = 8; // Số lượng mục trên mỗi trang
+  p = 1;
+
   contacts: any[] = [];
   keySearchFriend!: string;
   keySearchInvitationFriend!: string;
