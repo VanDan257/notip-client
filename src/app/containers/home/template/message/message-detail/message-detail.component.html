@@ -5,16 +5,19 @@
   <div class="main-box-chat">
     <div class="box-chat">
       <div class="box-chat-header">
-        <div class="box-avatar">
+        <div class="box-avatar d-flex">
           <ng-container *ngIf="groupInfo != null">
             <img src="{{ groupInfo.chat.photo | pipeHostFile }}" alt="" />
-            <span>{{ groupInfo.chat.chatName }}</span>
+            <div class="mx-2">
+              <div style="font-size: 1rem; font-weight: 600;">{{ groupInfo.chat.chatName }}</div>
+              <div style="font-size: 0.8rem; color: #707070;">{{groupInfo.users.length}} thành viên</div>
+            </div>
           </ng-container>
         </div>
         <div class="box-add-user-group">
           <span (click)="openModalAddContact()" *ngIf="isGroup" class="icon-control" title="Thêm liên hệ">
-          <i class="mdi mdi-account-plus"></i>
-        </span>
+            <i class="mdi mdi-account-plus"></i>
+          </span>
           <span
             (click)="callVideo()"
             class="icon-control"
@@ -27,7 +30,7 @@
           </span>
         </div>
       </div>
-      <div #scroll [scrollTop]="scroll.scrollHeight" class="box-chat-body">
+      <div #scroll  class="box-chat-body">
         <div *ngIf="currentUser != null" class="box-message">
           <div *ngFor="let item of messages; index as index">
             <div

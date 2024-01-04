@@ -9,6 +9,6 @@ export class PipeHostFilePipe implements PipeTransform {
   // Ngược lại => Lấy ảnh qua server
   transform(value: any, ...args: any[]): any {
     if (value?.includes('http')) return value;
-    return '/assets/images/' + value;
+    return 'https://res.cloudinary.com/drvjtqywh/image/upload/' + value;
   }
 }

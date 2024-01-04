@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Message } from 'src/app/core/models/message';
 import { User } from 'src/app/core/models/user';
@@ -38,6 +47,18 @@ export class MessageDetailComponent implements OnInit {
     private toastr: ToastrService,
   ) {}
 
+  @ViewChild('scroll') private myScrollContainer!: ElementRef;
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }
+  }
+
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
     this.getMessage();
@@ -64,6 +85,7 @@ export class MessageDetailComponent implements OnInit {
         this.searchContact($('#search-contact-add-group').val());
       }, 300);
     })
+    this.scrollToBottom();
   }
 
 
@@ -169,7 +191,9 @@ export class MessageDetailComponent implements OnInit {
         next: (response: any) => {
           this.textMessage = ''
           this.socketService.sendMessage({payload: response, chatName: this.group.chatName});
-          this.messages.push(response)
+          setTimeout(() => {
+            this.messages.push(response)
+          }, 300)
         },
         error: (error) => console.log('error: ', error),
       });
@@ -193,7 +217,9 @@ export class MessageDetailComponent implements OnInit {
         next: (response: any) => {
           this.textMessage = ''
           this.socketService.sendMessage({payload: response, chatName: this.group.chatName});
-          this.messages.push(response)
+          setTimeout(() => {
+            this.messages.push(response)
+          }, 300)
         },
         error: (error) => console.log('error: ', error),
       });

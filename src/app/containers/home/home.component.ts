@@ -205,7 +205,9 @@ export class HomeComponent implements OnInit {
       this.userService.updateAvatar(file).subscribe({
         next: (response) => {
           let user: any = response;
+
           this.currentUser.photoUrl = user.avatar;
+
           this.authService.updateCurrentUser(this.currentUser);
           this.toastr.success('Cập nhật thành công ảnh đại diện', 'Thông tin cá nhân', {
             timeOut: 2000,

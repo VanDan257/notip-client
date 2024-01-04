@@ -69,7 +69,6 @@ export class DashboardComponent implements OnInit {
           if(a.messageCount < b.messageCount) return 1;
           return 0;
         })
-        console.log(this.clients)
       }
     })
   }
