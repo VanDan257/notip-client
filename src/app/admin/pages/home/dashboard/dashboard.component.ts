@@ -15,7 +15,6 @@ export class DashboardComponent implements OnInit {
   messages: any[] = [];
   messageCharts: any[] = [];
   userUse: any[] = [];
-  userTable: any[] = [];
   numberOfMessages: number | undefined;
 
   @ViewChild('myChart') myChart!: ElementRef;
@@ -29,10 +28,6 @@ export class DashboardComponent implements OnInit {
   xAxisLabel = 'Tháng';
   yAxisLabel = 'Số lượng tin đã nhắn';
   showLegend = true;
-
-  // colorScheme = {
-  //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  // };
 
   constructor(private chatRoomService: ChatroomService, private userService: UserService, private toastr: ToastrService) { }
 
@@ -63,12 +58,14 @@ export class DashboardComponent implements OnInit {
           }
         }
 
-        this.clients = Array.from(clientMap.values()).slice(0, 10);
+        this.clients = Array.from(clientMap.values());
         this.clients.sort((a, b) => {
           if(a.messageCount > b.messageCount) return -1;
           if(a.messageCount < b.messageCount) return 1;
           return 0;
         })
+
+        this.clients = this.clients.slice(0, 10);
       }
     })
   }

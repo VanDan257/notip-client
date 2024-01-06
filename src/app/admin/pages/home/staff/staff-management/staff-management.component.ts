@@ -6,6 +6,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import {NgxSpinnerService} from "ngx-spinner";
+import {finalize} from "rxjs/operators";
 
 declare const $: any;
 
@@ -16,13 +18,18 @@ declare const $: any;
 })
 export class StaffManagementComponent implements OnInit{
   users: any[] = [];
-  newUser: any;
+  pageSize = 10; // Số lượng mục trên mỗi trang
+  pageNumber = 1;
+
   createStaffForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   user = new FormData();
   staffDelete: any | undefined;
 
-  constructor(private userService: UserService, private toastr: ToastrService, private fb: FormBuilder) {  }
+  constructor(private userService: UserService,
+              private toastr: ToastrService,
+              private fb: FormBuilder,
+              private spinner: NgxSpinnerService) {  }
 
   ngOnInit() {
     this.initializeForm();
@@ -38,6 +45,7 @@ export class StaffManagementComponent implements OnInit{
       phone: [''],
       dob: [''],
       avatar: {},
+      role: [''],
       address: [''],
       password: [
         '',
@@ -47,10 +55,6 @@ export class StaffManagementComponent implements OnInit{
           Validators.minLength(4),
         ],
       ],
-    });
-    this.createStaffForm.controls['password'].valueChanges.subscribe({
-      next: () =>
-        this.createStaffForm.controls['confirmPassword'].updateValueAndValidity(),
     });
   }
 
@@ -63,17 +67,21 @@ export class StaffManagementComponent implements OnInit{
   }
 
   createStaff(){
-    // this.createStaffForm.append('file', this.file);
-    // let user = { ...this.createStaffForm.value};
+    this.spinner.show();
     this.user.append('name', this.createStaffForm.value.name)
+    this.user.append('gender', this.createStaffForm.value.gender)
+    this.user.append('role', this.createStaffForm.value.role)
     this.user.append('email', this.createStaffForm.value.email)
     this.user.append('phone', this.createStaffForm.value.phone)
     this.user.append('address', this.createStaffForm.value.address)
     this.user.append('password', this.createStaffForm.value.password)
     this.user.append('dob', this.createStaffForm.value.dob)
 
-    console.log(this.user);
-    this.userService.createAccountAdmin(this.user).subscribe({
+    this.userService.createAccountAdmin(this.user).pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+    ).subscribe({
       next: _ => {
         this.getAllAdmin();
         $('#modalCreateStaff').modal('hide');

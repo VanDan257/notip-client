@@ -6,6 +6,8 @@ import { InfoDetailChatRoomComponent } from './chat-room/info-detail-chat-room/i
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastrModule } from "ngx-toastr";
 import {HomeRoutingModule} from "./home-routing.module";
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 // pipe
@@ -38,6 +40,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     PipeModule,
     ToastrModule,
     FormsModule,
+    NgxPaginationModule,
+    NgxSpinnerModule,
     ReactiveFormsModule
   ],
 })

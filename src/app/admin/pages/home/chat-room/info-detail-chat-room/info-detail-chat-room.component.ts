@@ -16,6 +16,11 @@ export class InfoDetailChatRoomComponent implements OnInit{
   infoChat!: any;
   memberDelete: any | undefined;
 
+  pageSizeMessages = 10; // Số lượng mục trên mỗi trang
+  pageNumberMessages = 1;
+  pageSizeMembers = 10; // Số lượng mục trên mỗi trang
+  pageNumberMembers = 1;
+
   constructor(private router: Router, private chatRoomService: ChatroomService, private toastr: ToastrService) {}
 
   ngOnInit() {

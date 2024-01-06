@@ -40,7 +40,7 @@ import { MessageDetailComponent } from './containers/home/template/message/messa
 import { ListMessageSearchComponent } from './containers/home/template/message/list-message-search/list-message-search.component';
 import { ButtonUploadComponent } from './containers/button-upload/button-upload.component';
 
-const config: SocketIoConfig = { url: environment.chatHub, options: {} };
+const configChat: SocketIoConfig = { url: environment.chatHub, options: {} };
 
 @NgModule({
     declarations: [
@@ -72,7 +72,7 @@ const config: SocketIoConfig = { url: environment.chatHub, options: {} };
         PipeModule,
         NgxPaginationModule,
         ToastrModule.forRoot(),
-        SocketIoModule.forRoot(config),
+        SocketIoModule.forRoot(configChat),
         DateTimePickerModule,
     ],
     providers: [

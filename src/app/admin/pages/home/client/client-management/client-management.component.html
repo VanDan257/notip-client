@@ -21,7 +21,7 @@
       </tr>
       </thead>
       <tbody *ngIf="clients.length > 0">
-      <tr *ngFor="let user of clients">
+      <tr *ngFor="let user of clients | paginate: { itemsPerPage: pageSize, currentPage: pageNumber }">
         <td><img src="{{ user.avatar | pipeHostFile }}" alt="" /></td>
         <td>{{user.name}}</td>
         <td>{{user.phone}}</td>
@@ -45,5 +45,18 @@
       </tr>
       </tbody>
     </table>
+    <div class="d-flex mt-4 flex-wrap">
+      <p class="text-muted">Showing {{1+pageSize*(pageNumber-1)}} to
+        <ng-container *ngIf="(10+pageSize*(pageNumber-1)) >= clients.length">
+          {{clients.length}}
+        </ng-container>
+        <ng-container *ngIf="(10+pageSize*(pageNumber-1)) < clients.length">
+          {{10+pageSize*(pageNumber-1)}}
+        </ng-container>
+        of {{clients.length}} entries</p>
+      <nav class="ml-auto">
+        <pagination-controls (pageChange)="pageNumber = $event"></pagination-controls>
+      </nav>
+    </div>
   </div>
 </div>

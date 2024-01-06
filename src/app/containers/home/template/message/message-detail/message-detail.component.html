@@ -10,7 +10,10 @@
             <img src="{{ groupInfo.chat.photo | pipeHostFile }}" alt="" />
             <div class="mx-2">
               <div style="font-size: 1rem; font-weight: 600;">{{ groupInfo.chat.chatName }}</div>
-              <div style="font-size: 0.8rem; color: #707070;">{{groupInfo.users.length}} thành viên</div>
+              <ng-container *ngIf="groupInfo.chat.typeChatId === 2">
+                <div style="font-size: 0.8rem; color: #707070;">{{groupInfo.users.length}} thành viên</div>
+
+              </ng-container>
             </div>
           </ng-container>
         </div>
@@ -270,12 +273,6 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-<!--        <button-->
-<!--          type="button"-->
-<!--          class="btn btn-close"-->
-<!--          data-dismiss="modal"-->
-<!--          aria-label="Close"-->
-<!--        ></button>-->
         <h5 class="modal-title">Thêm liên hệ</h5>
       </div>
       <div class="modal-body">
@@ -332,3 +329,5 @@
     </div>
   </div>
 </div>
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff"><p style="color: white" > Loading... </p></ngx-spinner>

@@ -207,13 +207,13 @@
       </div>
       <div class="modal-body" style="font-size: 14px">
         <div class="row">
-          <div class="col-md-4 d-flex align-items-center flex-column">
-            <img class="profile-img" [src]="currentUser.photoUrl | pipeHostFile" alt="Img">
-            <label class="text-center btn btn-success btn-sm margin-top-md" for="edit-user-avatar">
-                Chọn ảnh
-              <input type="file" id="edit-user-avatar" style="display: none" (change)="onloadAvatar($event)"
-                     accept=".jpg, .png, .jpeg, .gif, .bmp|image/*" />
-            </label>
+          <div id="spinner-container" class="col-md-4 d-flex align-items-center flex-column">
+              <img class="profile-img" [src]="currentUser.photoUrl | pipeHostFile" alt="Img">
+              <label class="text-center btn btn-success btn-sm margin-top-md" for="edit-user-avatar">
+                  Chọn ảnh
+                <input type="file" id="edit-user-avatar" style="display: none" (change)="onloadAvatar($event)"
+                       accept=".jpg, .png, .jpeg, .gif, .bmp|image/*" />
+              </label>
           </div>
           <div class="col-md-8">
             <div class="row">
@@ -375,5 +375,7 @@
   </div>
 </div>
 
-<ngx-spinner></ngx-spinner>
+<ngx-spinner bdOpacity="0.9" bdColor="rgba(51,51,51,0.8)" size="medium" type="ball-spin-clockwise">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>
 

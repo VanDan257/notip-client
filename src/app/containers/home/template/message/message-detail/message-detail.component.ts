@@ -18,6 +18,8 @@ import * as moment from 'moment';
 import {SocketService} from "../../../../../core/service/socket.service";
 import {UserService} from "../../../../../core/service/user.service";
 import {ToastrService} from "ngx-toastr";
+import {NgxSpinnerService} from "ngx-spinner";
+import {finalize} from "rxjs/operators";
 
 declare const $: any;
 
@@ -45,6 +47,7 @@ export class MessageDetailComponent implements OnInit {
     private userService: UserService,
     private socketService: SocketService,
     private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
   ) {}
 
   @ViewChild('scroll') private myScrollContainer!: ElementRef;
@@ -103,7 +106,6 @@ export class MessageDetailComponent implements OnInit {
       this.chatBoardService.getChatBoardInfo(this.group.id).subscribe({
           next: (response: any) => {
             this.groupInfo = response;
-            console.log('groupInfo: ', this.groupInfo)
             this.isGroup = this.groupInfo.chat.typeChatId == 2;
           },
           error: (error) => console.log('error: ', error),
@@ -143,9 +145,10 @@ export class MessageDetailComponent implements OnInit {
   }
 
   sendMessage() {
-    this.textMessage = `${this.textMessage}${$('#my-text')
+    this.textMessage = `${$('#my-text')
       .emojioneArea({})
       .val()}`;
+    console.log(this.textMessage);
     if (this.textMessage == null || this.textMessage.trim() == '') return;
 
     const currentDateTime = moment();
@@ -162,7 +165,7 @@ export class MessageDetailComponent implements OnInit {
     this.chatBoardService.sendMessage(message).subscribe({
       next: (response: any) => {
         this.textMessage = '';
-        console.log(this.groupInfo.chat.chatName)
+        $('.emojionearea-editor').innerHTML = '';
         this.socketService.sendMessage({payload: message, chatName: this.groupInfo.chat.chatName});
         this.messages.push(response)
       },
@@ -217,9 +220,7 @@ export class MessageDetailComponent implements OnInit {
         next: (response: any) => {
           this.textMessage = ''
           this.socketService.sendMessage({payload: response, chatName: this.group.chatName});
-          setTimeout(() => {
-            this.messages.push(response)
-          }, 300)
+          this.messages.push(response)
         },
         error: (error) => console.log('error: ', error),
       });
@@ -231,7 +232,7 @@ export class MessageDetailComponent implements OnInit {
   }
 
   updateGroupAvatar(evt: any) {
-
+    this.spinner.show();
     if (evt.target.files && evt.target.files[0]) {
       let filesToUpload: any[] = [];
       for (let i = 0; i < evt.target.files.length; i++) {
@@ -239,15 +240,24 @@ export class MessageDetailComponent implements OnInit {
       }
 
       const formData = new FormData();
-
       formData.append('file', filesToUpload[0]);
       formData.append('chatId', this.group.id);
 
-      this.chatBoardService.updateGroupAvatar(formData).subscribe({
+      this.chatBoardService.updateGroupAvatar(formData).pipe(
+          finalize(() => {
+            this.spinner.hide();
+          }))
+       .subscribe({
         next: () => {
-          this.getChatBoardInfo();
+          this.spinner.show();
+            this.getChatBoardInfo();
+            this.toastr.success('', 'Cập nhật ảnh nhóm thành công!', {
+              timeOut: 2000
+            })
         },
-        error: (error) => console.log('error: ', error),
+        error: (error) => this.toastr.error('Cập nhật ảnh nhóm không thành công!', 'Đã có lỗi xảy ra', {
+          timeOut: 2000
+        }),
       });
     }
   }

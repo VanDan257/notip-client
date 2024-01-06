@@ -8,8 +8,9 @@ import {ChatroomService} from "../../../../services/chatroom.service";
 })
 export class ChatRoomManagementComponent implements OnInit{
   chats: any[]=[];
-  // currentPage = 1;
-  // pageSize = Math.ceil(this.chats.length/this.currentPage);
+
+  pageSize = 10; // Số lượng mục trên mỗi trang
+  pageNumber = 1;
 
   constructor(private chatService: ChatroomService) {}
 

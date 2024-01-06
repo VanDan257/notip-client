@@ -193,6 +193,7 @@ export class HomeComponent implements OnInit {
   }
 
   onloadAvatar(evt: any) {
+    this.spinner.show();
     if (evt.target.files && evt.target.files[0]) {
       let filesToUpload: any[] = [];
       for (let i = 0; i < evt.target.files.length; i++) {
@@ -202,16 +203,19 @@ export class HomeComponent implements OnInit {
 
       file.append('file', filesToUpload[0]);
 
-      this.userService.updateAvatar(file).subscribe({
+      this.userService.updateAvatar(file).pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+      ).subscribe({
         next: (response) => {
+
           let user: any = response;
-
-          this.currentUser.photoUrl = user.avatar;
-
-          this.authService.updateCurrentUser(this.currentUser);
-          this.toastr.success('Cập nhật thành công ảnh đại diện', 'Thông tin cá nhân', {
-            timeOut: 2000,
-          });
+            this.currentUser.photoUrl = user.avatar;
+            this.authService.updateCurrentUser(this.currentUser);
+            this.toastr.success('Cập nhật thành công ảnh đại diện', 'Thông tin cá nhân', {
+              timeOut: 2000,
+            });
         },
         error: (error) => {
           this.toastr.error('', error, {

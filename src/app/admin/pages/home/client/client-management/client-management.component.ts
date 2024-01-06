@@ -10,6 +10,9 @@ import {ToastrService} from "ngx-toastr";
 export class ClientManagementComponent implements OnInit{
   clients: any[] = [];
 
+  pageSize = 10; // Số lượng mục trên mỗi trang
+  pageNumber = 1;
+
   constructor(private userService: UserService, private toastr: ToastrService) {  }
 
   ngOnInit() {

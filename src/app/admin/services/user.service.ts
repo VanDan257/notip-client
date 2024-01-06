@@ -17,11 +17,11 @@ export class UserService {
     return this.http.post(AdminRoutingApi.LoginAdmin, params).pipe(
       map((response: any) => {
         localStorage.setItem(
-          Constants.LOCAL_STORAGE_KEY.SESSION_ADMIN,
+          Constants.LOCAL_STORAGE_KEY.SESSION,
           JSON.stringify(response['data'])
         );
         localStorage.setItem(
-          Constants.LOCAL_STORAGE_KEY.TOKEN_ADMIN,
+          Constants.LOCAL_STORAGE_KEY.TOKEN,
           response['data']['token']
         );
 
@@ -32,11 +32,11 @@ export class UserService {
 
 
   get currentAdmin(): any {
-    let session = localStorage.getItem(Constants.LOCAL_STORAGE_KEY.SESSION_ADMIN);
+    let session = localStorage.getItem(Constants.LOCAL_STORAGE_KEY.SESSION);
 
     if (session == null || session == undefined) return null;
     return JSON.parse(
-      localStorage.getItem(Constants.LOCAL_STORAGE_KEY.SESSION_ADMIN)?.toString() ??
+      localStorage.getItem(Constants.LOCAL_STORAGE_KEY.SESSION)?.toString() ??
       ''
     );
   }

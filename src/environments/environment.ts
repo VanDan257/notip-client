@@ -2,6 +2,5 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api/',
   chatHub: 'http://localhost:3000/chat',
-  // apiUrl: 'http://localhost:5129/api/',
-  // chatHub: 'http://localhost:5129/chatHub',
+  callHub: 'http://localhost:3000/call'
 };
