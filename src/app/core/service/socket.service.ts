@@ -31,12 +31,15 @@ export class SocketService {
     return this.socket.fromEvent('message-received');
   }
 
-  onTyping() {
-    return this.socket.fromEvent('typing');
+  onOffer(data: any) {
+    this.socket.emit('offer', data)
   }
 
-  onStopTyping() {
-    return this.socket.fromEvent('stop typing');
+  onAnswer(data: any) {
+    this.socket.emit('answer', data)
   }
 
+  iceCandidate(data: any) {
+    this.socket.emit('ice-candidate', data);
+  }
 }

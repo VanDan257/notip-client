@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -48,7 +47,9 @@ export class MessageDetailComponent implements OnInit {
     private socketService: SocketService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-  ) {}
+  ) {
+
+  }
 
   @ViewChild('scroll') private myScrollContainer!: ElementRef;
 

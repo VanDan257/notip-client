@@ -12,6 +12,7 @@ import { PipeModule } from './core/pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment'
 import { NgxPaginationModule } from 'ngx-pagination';
+// import {ProgressBarModule} from "primeng/progressbar";
 
 // pipe
 import { PipeHostFilePipe } from './core/pipe/pipe-host-file.pipe';
@@ -61,20 +62,21 @@ const configChat: SocketIoConfig = { url: environment.chatHub, options: {} };
         ButtonUploadComponent,
         ListMessageSearchComponent,
     ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        NgxSpinnerModule,
-        PipeModule,
-        NgxPaginationModule,
-        ToastrModule.forRoot(),
-        SocketIoModule.forRoot(configChat),
-        DateTimePickerModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgxSpinnerModule,
+    PipeModule,
+    NgxPaginationModule,
+    ToastrModule.forRoot(),
+    SocketIoModule.forRoot(configChat),
+    DateTimePickerModule,
+    // ProgressBarModule,
+  ],
     providers: [
         AuthGuardService,
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
