@@ -49,3 +49,44 @@
 .btn-out-group-chat:hover{
   color: #ff2828;
 }
+
+/* call video */
+.video-call-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.local-video-container,
+.remote-video-container {
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+video {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-control {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-control:hover {
+  background-color: #0056b3;
+}
+
+

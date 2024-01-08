@@ -31,12 +31,28 @@ export class SocketService {
     return this.socket.fromEvent('message-received');
   }
 
-  onTyping() {
-    return this.socket.fromEvent('typing');
+  sendOffer(data: any) {
+    return this.socket.emit('offer', data)
   }
 
-  onStopTyping() {
-    return this.socket.fromEvent('stop typing');
+  sendAnswer(data: any){
+    return this.socket.emit('answer', data)
+  }
+
+  iceCandidate(data: any){
+    return this.socket.emit('ice-candidate', data);
+  }
+
+  onOffer() {
+    return this.socket.fromEvent('offer');
+  }
+
+  onAnswer() {
+    return this.socket.fromEvent('answer');
+  }
+
+  onIceCandidate(){
+    return this.socket.fromEvent('ice-candidate');
   }
 
 }

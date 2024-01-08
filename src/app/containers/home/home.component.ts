@@ -87,10 +87,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.authService.currentUserValue;
-    // lắng nghe cuôc gọi đến => xử lý
-    // this.signalRService.hubConnection.on('callHubListener', (data) => {
-    //   this.openModalCall(data);
-    // });
 
     this.socketService.onMessageReceived().subscribe({
       next: (response) => {

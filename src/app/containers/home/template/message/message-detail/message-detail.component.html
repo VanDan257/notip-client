@@ -22,7 +22,7 @@
             <i class="mdi mdi-account-plus"></i>
           </span>
           <span
-            (click)="callVideo()"
+            (click)="startCall(group.chat.chatName)"
             class="icon-control"
             title="Gọi video"
           >
@@ -154,10 +154,9 @@
             />
           </span>
         </div>
-        <div class="box-chat-send-text" (keypress)="onKeydown($event)">
+        <div class="box-chat-send-text" (keydown)="onKeydown($event)">
           <textarea
             id="my-text"
-            (keydown)="onKeydown($event)"
             [(ngModel)]="textMessage"
             class="form-control"
             rows="1"
@@ -331,3 +330,12 @@
 </div>
 
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff"><p style="color: white" > Loading... </p></ngx-spinner>
+
+<div class="video-call-container">
+  <div class="local-video-container">
+    <video id="localVideo" autoplay></video>
+  </div>
+  <div class="remote-video-container">
+    <video id="remoteVideo" autoplay></video>
+  </div>
+</div>

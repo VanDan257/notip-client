@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -28,9 +29,12 @@ declare const $: any;
   templateUrl: './message-detail.component.html',
   styleUrls: ['./message-detail.component.css'],
 })
-export class MessageDetailComponent implements OnInit {
+export class MessageDetailComponent implements OnInit, AfterViewChecked {
   @Input() group!: any;
   @Input() contact!: User;
+
+  private localStream!: MediaStream;
+  private pc!: RTCPeerConnection;
 
   currentUser: any = {};
   messages: Message[] = [];
@@ -63,6 +67,25 @@ export class MessageDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    // xử lý call video
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        this.localStream = stream;
+        const videoElement = document.getElementById('localVideo') as HTMLVideoElement;
+        videoElement.srcObject = stream;
+      })
+      .catch((error) => {
+        console.error('Error accessing media devices:', error);
+      });
+
+    this.socketService.onOffer().subscribe({
+      next: (data) => {
+        // Xử lý offer từ người gọi
+        if(!this.pc){
+        }
+      }
+    })
+
     this.currentUser = this.authService.currentUserValue;
     this.getMessage();
 
@@ -91,14 +114,50 @@ export class MessageDetailComponent implements OnInit {
     this.scrollToBottom();
   }
 
-
-  mess() {}
-
   ngOnChanges(changes: SimpleChanges): void {
 
     this.getMessage();
     this.getChatBoardInfo();
     $('.main-box-chat').removeClass('box-contact-info-opened');
+  }
+
+  startCall(room: any){
+    if(!this.pc){
+      this.createPeerConnection();
+    }
+    this.pc.createOffer().then((offer) => {
+      this.pc.setLocalDescription(offer);
+      this.socketService.sendOffer({senderName: this.currentUser.name, room: this.groupInfo.chat.chatName, offer: offer})
+    })
+  }
+
+  createPeerConnection(){
+    this.pc = new RTCPeerConnection();
+
+    // thêm local stream vào connection
+    this.localStream.getTracks().forEach((track) => {
+      this.pc.addTrack(track, this.localStream)
+    })
+
+    // xử lý ice-candidate gửi tới room
+    this.pc.onicecandidate = (event) => {
+      if(event.candidate){
+        this.socketService.iceCandidate({
+          targetId: this.group.chatName,
+          candidate: event.candidate,
+        })
+      }
+    }
+
+    // xử lý remote stream
+    this.pc.ontrack = (event) => {
+      const remoteVideoElement = document.getElementById('remoteVideo') as HTMLVideoElement;
+      remoteVideoElement.srcObject = event.streams[0];
+    }
+  }
+
+  endCall(){
+
   }
 
   getChatBoardInfo() {
@@ -269,17 +328,17 @@ export class MessageDetailComponent implements OnInit {
     });
   }
 
-  callVideo() {
-    this.callService.call(this.groupInfo.Code).subscribe({
-      next: (response: any) => {
-        let data = JSON.parse(response['data']);
-        $('#outgoingCallIframe').attr('src', data);
-        $('#modalOutgoingCall').modal();
-        console.log('callVideo', data);
-      },
-      error: (error) => console.log('error: ', error),
-    });
-  }
+  // callVideo() {
+  //   this.callService.call(this.groupInfo.Code).subscribe({
+  //     next: (response: any) => {
+  //       let data = JSON.parse(response['data']);
+  //       $('#outgoingCallIframe').attr('src', data);
+  //       $('#modalOutgoingCall').modal();
+  //       console.log('callVideo', data);
+  //     },
+  //     error: (error) => console.log('error: ', error),
+  //   });
+  // }
 
   openModalRemoveGroup(){
     $('#modalRemoveGroup').modal();
