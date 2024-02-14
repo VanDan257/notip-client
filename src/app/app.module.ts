@@ -7,10 +7,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { DateTimePickerModule} from 'ngx-datetime-picker';
+// import { DateTimePickerModule} from 'ngx-datetime-picker';
 import { PipeModule } from './core/pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
-import { environment } from '../environments/environment'
+import { environment } from '../environments/environment';
 import { NgxPaginationModule } from 'ngx-pagination';
 // import {ProgressBarModule} from "primeng/progressbar";
 
@@ -44,24 +44,24 @@ import { ButtonUploadComponent } from './containers/button-upload/button-upload.
 const configChat: SocketIoConfig = { url: environment.chatHub, options: {} };
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        LoginComponent,
-        LogoutComponent,
-        PageNotFoundComponent,
-        CallDetailComponent,
-        ListCallComponent,
-        ContactDetailComponent,
-        ListContactComponent,
-        DefaultComponent,
-        MessageDetailComponent,
-        ListMessageComponent,
-        NotificationDetailComponent,
-        ListNotificationComponent,
-        ButtonUploadComponent,
-        ListMessageSearchComponent,
-    ],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    LogoutComponent,
+    PageNotFoundComponent,
+    CallDetailComponent,
+    ListCallComponent,
+    ContactDetailComponent,
+    ListContactComponent,
+    DefaultComponent,
+    MessageDetailComponent,
+    ListMessageComponent,
+    NotificationDetailComponent,
+    ListNotificationComponent,
+    ButtonUploadComponent,
+    ListMessageSearchComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -74,14 +74,14 @@ const configChat: SocketIoConfig = { url: environment.chatHub, options: {} };
     NgxPaginationModule,
     ToastrModule.forRoot(),
     SocketIoModule.forRoot(configChat),
-    DateTimePickerModule,
+    // DateTimePickerModule,
     // ProgressBarModule,
   ],
-    providers: [
-        AuthGuardService,
-        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-    ],
-    bootstrap: [AppComponent]
+  providers: [
+    AuthGuardService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
