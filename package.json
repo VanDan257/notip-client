@@ -1,7 +1,7 @@
 {
   "name": "pnchat-client",
   "version": "0.0.0",
-  "author": "Đặng Anh Phú<daphu.dev@gmail.com> (https://github.com/danganhphu)",
+  "author": "Vandan257<vandan250702@gmail.com> (https://github.com/VanDan257)",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
